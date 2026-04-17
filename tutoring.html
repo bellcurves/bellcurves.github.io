@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bell Curves — PSAT Tutoring</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; }
+  :root {
+    --color-background-primary: #fff;
+    --color-background-secondary: #f6f6f4;
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #666;
+    --color-text-tertiary: #999;
+    --color-border-tertiary: rgba(0,0,0,0.1);
+    --color-border-secondary: rgba(0,0,0,0.2);
+    --color-border-primary: rgba(0,0,0,0.3);
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+  }
+
+  .p { background: var(--color-background-primary); color: var(--color-text-primary); max-width: 1100px; margin: 0 auto; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 40px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .logo { font-size: 17px; font-weight: 500; letter-spacing: -0.3px; }
+  .logo span { color: #1D9E75; }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--color-text-secondary); }
+  .nav-links a { text-decoration: none; color: inherit; cursor: pointer; }
+  .nav-links a.active { color: var(--color-text-primary); font-weight: 500; }
+  .btn-ghost { font-size: 13px; padding: 7px 16px; border: 0.5px solid var(--color-border-secondary); border-radius: 8px; background: none; color: var(--color-text-primary); cursor: pointer; }
+  .btn-ghost:hover { background: var(--color-background-secondary); }
+  .btn-primary { font-size: 13px; padding: 7px 18px; background: #1D9E75; border: none; border-radius: 8px; color: #fff; cursor: pointer; font-weight: 500; }
+  .btn-primary:hover { background: #0F6E56; }
+  .btn-green { background: #1D9E75; border: none; color: #fff; font-weight: 500; cursor: pointer; border-radius: 8px; }
+  .btn-green:hover { background: #0F6E56; }
+  .btn-outline { background: none; border: 0.5px solid var(--color-border-primary); color: var(--color-text-primary); cursor: pointer; border-radius: 8px; }
+  .btn-outline:hover { background: var(--color-background-secondary); }
+  .label { font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #1D9E75; margin-bottom: 12px; }
+  .sec-title { font-size: 32px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 12px; }
+  .sec-sub { font-size: 16px; color: var(--color-text-secondary); line-height: 1.7; max-width: 520px; margin-bottom: 48px; }
+
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; padding: 72px 40px 64px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: #E1F5EE; color: #0F6E56; font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 100px; margin-bottom: 20px; }
+  .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: #1D9E75; }
+  .hero h1 { font-size: 40px; font-weight: 500; line-height: 1.15; letter-spacing: -0.8px; margin-bottom: 18px; }
+  .hero h1 em { font-style: normal; color: #1D9E75; }
+  .hero-desc { font-size: 16px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 28px; max-width: 440px; }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+  .btn-lg { font-size: 14px; padding: 11px 24px; border-radius: 8px; cursor: pointer; font-weight: 500; }
+  .hero-stats { display: flex; gap: 24px; }
+  .hero-stat { border-left: 2px solid #1D9E75; padding-left: 12px; }
+  .hero-stat-num { font-size: 22px; font-weight: 500; color: #1D9E75; }
+  .hero-stat-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+
+  .price-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 16px; padding: 28px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+  .price-badge { display: inline-block; font-size: 11px; font-weight: 500; background: #E1F5EE; color: #0F6E56; padding: 4px 10px; border-radius: 100px; margin-bottom: 16px; }
+  .price-amount { font-size: 36px; font-weight: 500; margin-bottom: 4px; }
+  .price-sub { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 20px; }
+  .price-enroll { width: 100%; padding: 11px; background: #1D9E75; border: none; color: #fff; font-size: 14px; font-weight: 500; border-radius: 8px; cursor: pointer; margin-bottom: 14px; }
+  .price-enroll:hover { background: #0F6E56; }
+  .price-note { font-size: 12px; color: var(--color-text-secondary); text-align: center; margin-bottom: 20px; }
+  .price-divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 16px 0; }
+  .price-field { margin-bottom: 12px; }
+  .price-field label { display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 5px; }
+  .price-field input, .price-field select { width: 100%; padding: 8px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: 8px; font-size: 13px; background: var(--color-background-primary); color: var(--color-text-primary); font-family: inherit; }
+  .btn-next { width: 100%; padding: 10px; background: #1D9E75; border: none; color: #fff; font-size: 14px; font-weight: 500; border-radius: 8px; cursor: pointer; margin-top: 8px; }
+  .btn-next:hover { background: #0F6E56; }
+
+  .overview { padding: 64px 40px; }
+  .overview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .ov-item { display: flex; align-items: flex-start; gap: 10px; padding: 16px; border: 0.5px solid var(--color-border-tertiary); border-radius: 12px; }
+  .ov-check { width: 18px; height: 18px; border-radius: 50%; background: #E1F5EE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .ov-check svg { width: 10px; height: 10px; }
+  .ov-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+
+  .benefits { background: var(--color-background-secondary); margin: 0 40px; border-radius: 16px; padding: 64px; }
+  .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--color-border-tertiary); border: 0.5px solid var(--color-border-tertiary); border-radius: 16px; overflow: hidden; margin-top: 48px; }
+  .benefit { background: var(--color-background-secondary); padding: 32px 24px; }
+  .benefit-icon { width: 36px; height: 36px; border-radius: 8px; background: #E1F5EE; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .benefit-icon svg { width: 18px; height: 18px; }
+  .benefit h3 { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+  .benefit p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+
+  .advantages { padding: 80px 40px; }
+  .adv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .adv-card { border: 0.5px solid var(--color-border-tertiary); border-radius: 16px; padding: 28px; }
+  .adv-tag { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: #1D9E75; margin-bottom: 12px; }
+  .adv-card h3 { font-size: 16px; font-weight: 500; margin-bottom: 10px; }
+  .adv-card p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+
+  .tutors { padding: 0 40px 80px; }
+  .tutors-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+  .tutors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .tutor-card { border: 0.5px solid var(--color-border-tertiary); border-radius: 16px; overflow: hidden; }
+  .tutor-photo { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 500; }
+  .tutor-photo.t1 { background: #E1F5EE; color: #0F6E56; }
+  .tutor-photo.t2 { background: #E6F1FB; color: #185FA5; }
+  .tutor-photo.t3 { background: #EEEDFE; color: #534AB7; }
+  .tutor-body { padding: 20px; }
+  .tutor-body h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .tutor-role { font-size: 12px; color: #1D9E75; margin-bottom: 8px; }
+  .tutor-body p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+
+  .testimonials { background: var(--color-background-secondary); margin: 0 40px; border-radius: 16px; padding: 64px; margin-bottom: 80px; }
+  .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+  .test-card { background: var(--color-background-primary); border-radius: 12px; border: 0.5px solid var(--color-border-tertiary); padding: 24px; }
+  .test-quote { font-size: 14px; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 20px; }
+  .test-author { display: flex; align-items: center; gap: 10px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+  .av-g { background: #E1F5EE; color: #0F6E56; }
+  .av-b { background: #E6F1FB; color: #185FA5; }
+  .av-p { background: #EEEDFE; color: #534AB7; }
+  .author-name { font-size: 13px; font-weight: 500; }
+  .author-role { font-size: 12px; color: var(--color-text-tertiary); }
+
+  .faq { padding: 0 40px 80px; }
+  .faq-list { margin-top: 40px; border: 0.5px solid var(--color-border-tertiary); border-radius: 16px; overflow: hidden; }
+  .faq-item { border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-q { width: 100%; text-align: left; padding: 20px 24px; background: none; border: none; font-size: 14px; font-weight: 500; color: var(--color-text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-family: inherit; }
+  .faq-q:hover { background: var(--color-background-secondary); }
+  .faq-chevron { width: 16px; height: 16px; flex-shrink: 0; transition: transform 0.2s; }
+  .faq-chevron.open { transform: rotate(180deg); }
+  .faq-a { padding: 0 24px 20px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+
+  .cta-banner { margin: 0 40px 80px; background: #04342C; border-radius: 16px; padding: 64px; display: flex; justify-content: space-between; align-items: center; gap: 40px; }
+  .cta-banner h2 { font-size: 28px; font-weight: 500; color: #fff; line-height: 1.25; max-width: 420px; }
+  .cta-banner p { font-size: 15px; color: #9FE1CB; margin-top: 10px; max-width: 380px; }
+  .cta-btns { display: flex; gap: 12px; flex-shrink: 0; }
+
+  .footer { border-top: 0.5px solid var(--color-border-tertiary); padding: 48px 40px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+  .footer-brand p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; margin-top: 10px; max-width: 240px; }
+  .footer-col h4 { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-tertiary); margin-bottom: 14px; }
+  .footer-col a { display: block; font-size: 13px; color: var(--color-text-secondary); text-decoration: none; margin-bottom: 8px; cursor: pointer; }
+  .footer-col a:hover { color: var(--color-text-primary); }
+  .footer-bottom { border-top: 0.5px solid var(--color-border-tertiary); padding: 20px 40px; display: flex; justify-content: space-between; }
+  .footer-bottom p { font-size: 12px; color: var(--color-text-tertiary); }
+</style>
+</head>
+<body>
+<div class="p">
+
+  <nav class="nav">
+    <div class="logo">bell<span>curves</span></div>
+    <div class="nav-links">
+      <a class="active" href="#">Tutoring</a>
+      <a href="#">Test prep</a>
+      <a href="#">For schools</a>
+      <a href="#">About</a>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-ghost">Log in</button>
+      <button class="btn-primary">Get started</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow"><div class="eyebrow-dot"></div>One-on-one tutoring</div>
+      <h1>PSAT tutoring built for <em>your child's level</em></h1>
+      <p class="hero-desc">Personalized PSAT tutoring that starts exactly where your child is — not where other programs assume they should be. Diagnostic-driven, adaptive, and built around real results.</p>
+      <div class="hero-ctas">
+        <button class="btn-lg btn-green">Enroll now →</button>
+        <button class="btn-lg btn-outline">Learn more</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">+180pts</div>
+          <div class="hero-stat-label">avg. score increase</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">$55</div>
+          <div class="hero-stat-label">per session</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">4.9</div>
+          <div class="hero-stat-label">avg. instructor rating</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="price-card">
+        <div class="price-badge">PSAT one-on-one</div>
+        <div class="price-amount">$55 <span style="font-size:14px;font-weight:400;color:var(--color-text-secondary);">/ session</span></div>
+        <div class="price-sub">4.9 stars · 50+ reviews</div>
+        <button class="price-enroll">Start learning →</button>
+        <div class="price-note">Parents will be matched with a session within 24 hours</div>
+        <hr class="price-divider"/>
+        <div class="price-field">
+          <label>Parent's first name</label>
+          <input type="text" placeholder="First name"/>
+        </div>
+        <div class="price-field">
+          <label>Parent's last name</label>
+          <input type="text" placeholder="Last name"/>
+        </div>
+        <div class="price-field">
+          <label>Email address</label>
+          <input type="email" placeholder="you@example.com"/>
+        </div>
+        <div class="price-field">
+          <label>Student type</label>
+          <select>
+            <option>Select one...</option>
+            <option>8th grade</option>
+            <option>9th grade</option>
+            <option>10th grade</option>
+          </select>
+        </div>
+        <button class="btn-next">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="overview">
+    <div class="label">Program overview</div>
+    <div class="sec-title" style="margin-bottom:24px;">Join the PSAT as your child's head start</div>
+    <div class="overview-grid">
+      <div class="ov-item"><span class="ov-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span><span class="ov-text">PSAT diagnostic to map strengths and weaknesses</span></div>
+      <div class="ov-item"><span class="ov-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span><span class="ov-text">SAT-aligned practice to build long-term readiness</span></div>
+      <div class="ov-item"><span class="ov-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span><span class="ov-text">Personalized sessions targeting highest-impact gaps</span></div>
+      <div class="ov-item"><span class="ov-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span><span class="ov-text">Progress tracking with parent updates</span></div>
+      <div class="ov-item"><span class="ov-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span><span class="ov-text">One-on-one sessions from a certified test prep specialist</span></div>
+      <div class="ov-item"><span class="ov-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span><span class="ov-text">Flexible scheduling around your child's school day</span></div>
+    </div>
+  </section>
+
+  <div class="benefits">
+    <div class="label">Key benefits</div>
+    <div class="sec-title">Why students choose our tutoring programs</div>
+    <div class="benefits-grid">
+      <div class="benefit">
+        <div class="benefit-icon"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6.5" stroke="#1D9E75" stroke-width="1.5"/><path d="M6 9l2 2 4-4" stroke="#1D9E75" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Early gap identification</h3>
+        <p>The PSAT reveals exactly where your child's knowledge gaps are — months or years before the SAT. We translate diagnostic data into a personalized plan that closes gaps while there's still time to act.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M3 15l4-4m0 0l2-6 3 3-6 2zm4-4l4-4" stroke="#1D9E75" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>SAT pipeline advantage</h3>
+        <p>Everything your child does in PSAT tutoring connects directly to SAT performance. Students entering the SAT with prior PSAT preparation build continuously rather than starting over.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 4.5H15l-3.7 2.7 1.4 4.3L9 11l-3.7 2.5 1.4-4.3L3 6.5h4.5L9 2z" stroke="#1D9E75" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+        <h3>National Merit preparation</h3>
+        <p>For 11th graders, the PSAT is the qualifying exam for National Merit Scholarship. Starting earlier gives your child a significant advantage in preparing for this recognition.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="advantages">
+    <div class="label">Additional advantages</div>
+    <div class="sec-title">Designed for measurable improvement</div>
+    <div class="adv-grid">
+      <div class="adv-card">
+        <div class="adv-tag">Diagnostic</div>
+        <h3>Diagnostic-driven sessions</h3>
+        <p>Sessions are built around your child's PSAT results, targeting the specific skill areas where improvement will have the greatest impact on score and future SAT readiness.</p>
+      </div>
+      <div class="adv-card">
+        <div class="adv-tag">Adaptive</div>
+        <h3>Real-time adjustments</h3>
+        <p>As your child progresses, the tutor shifts focus in real time to stay one step ahead — maintaining motivation and adjusting methods to keep every session productive.</p>
+      </div>
+      <div class="adv-card">
+        <div class="adv-tag">Transparency</div>
+        <h3>Parent visibility</h3>
+        <p>Regular updates keep you informed on where your child stands, what concepts they're building, and what the tutor recommends next — so you're never in the dark.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tutors">
+    <div class="tutors-header">
+      <div>
+        <div class="label">Expert tutors</div>
+        <div class="sec-title" style="margin-bottom:0;">Meet the PSAT tutoring experts</div>
+      </div>
+      <button class="btn-ghost">View all tutors →</button>
+    </div>
+    <div class="tutors-grid">
+      <div class="tutor-card">
+        <div class="tutor-photo t1">JA</div>
+        <div class="tutor-body">
+          <h3>James A.</h3>
+          <div class="tutor-role">PSAT &amp; SAT specialist · 99th percentile</div>
+          <p>6 years of experience helping NYC students navigate the PSAT-to-SAT pipeline. Scored 1580 on the SAT and specializes in math reasoning strategy.</p>
+        </div>
+      </div>
+      <div class="tutor-card">
+        <div class="tutor-photo t2">MK</div>
+        <div class="tutor-body">
+          <h3>Maya K.</h3>
+          <div class="tutor-role">Reading &amp; writing specialist · 98th percentile</div>
+          <p>Trained in evidence-based reading strategies with a focus on closing comprehension gaps fast. Former NYC DOE teacher and curriculum writer.</p>
+        </div>
+      </div>
+      <div class="tutor-card">
+        <div class="tutor-photo t3">DP</div>
+        <div class="tutor-body">
+          <h3>David P.</h3>
+          <div class="tutor-role">Math &amp; data analysis · 97th percentile</div>
+          <p>Specializes in the advanced math and data analysis sections that trip up most students. Known for breaking down complex problems into intuitive steps.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="testimonials">
+    <div class="label">Student stories</div>
+    <div class="sec-title">What our students are saying</div>
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-quote">"The structured lessons and practice sessions helped me increase my score faster than expected. The instructors explain complex concepts in a simple way."</div>
+        <div class="test-author"><div class="avatar av-g">ER</div><div><div class="author-name">Emily R.</div><div class="author-role">SAT student</div></div></div>
+      </div>
+      <div class="test-card">
+        <div class="test-quote">"The tutoring sessions were extremely helpful. I felt more confident going into the exam and achieved my target score."</div>
+        <div class="test-author"><div class="avatar av-b">DM</div><div><div class="author-name">Daniel M.</div><div class="author-role">SHSAT student</div></div></div>
+      </div>
+      <div class="test-card">
+        <div class="test-quote">"The study materials and practice questions closely matched the real exam. Highly recommended for anyone preparing seriously."</div>
+        <div class="test-author"><div class="avatar av-p">SL</div><div><div class="author-name">Sophia L.</div><div class="author-role">SSAT student</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq">
+    <div class="label">FAQs</div>
+    <div class="sec-title">Common questions about our PSAT tutoring</div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is PSAT tutoring worth it if the SAT is the real test?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" style="display:none;">Yes — because the PSAT and SAT cover the same skills. Starting now means your child scores 62 points above the national average. They'll build habits that compound significantly by the time they reach the full SAT.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What grade should my child start PSAT tutoring?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" style="display:none;">We recommend starting in 8th or 9th grade for the most runway. 10th grade is still highly effective. 11th grade is specifically focused on National Merit qualification and direct SAT preparation.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can my child transition from PSAT tutoring to SAT tutoring?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" style="display:none;">Absolutely — and we recommend it. Your child's PSAT tutor will document full progress and set objectives so the transition to SAT coursework or pathways is seamless.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How many sessions are recommended?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" style="display:none;">It depends on the gaps identified in the diagnostic. Most students benefit from 8–16 sessions for meaningful progress. Our instructors will recommend a session frequency after the first assessment. 8–12 sessions is standard for PSAT; more may be recommended for SAT prep continuation.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is this in-person or online?<svg class="faq-chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a" style="display:none;">Both options are available. Online sessions use an interactive whiteboard platform built for test prep tutoring. In-person sessions are available at select NYC locations. Most families find online equally effective with more scheduling flexibility.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <div>
+      <h2>Ready to get your child started?</h2>
+      <p>Join thousands of NYC students building toward their target score — from exactly where they are today.</p>
+    </div>
+    <div class="cta-btns">
+      <button style="background:#fff;color:#04342C;border:none;font-size:13px;padding:9px 20px;border-radius:8px;font-weight:500;cursor:pointer;">Enroll now →</button>
+      <button style="background:none;border:0.5px solid #5DCAA5;color:#9FE1CB;font-size:13px;padding:9px 20px;border-radius:8px;cursor:pointer;">For schools</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-brand">
+      <div class="logo">bell<span>curves</span></div>
+      <p>NYC test prep built for where your child actually is — expert courses, tutoring, and proven study tools.</p>
+    </div>
+    <div class="footer-col"><h4>Pages</h4><a href="#">Home</a><a href="#">About</a><a href="#">Tutoring</a><a href="#">Courses</a></div>
+    <div class="footer-col"><h4>Other</h4><a href="#">Organizations</a><a href="#">Partners</a></div>
+    <div class="footer-col"><h4>Legal</h4><a href="#">Privacy policy</a><a href="#">Terms of service</a><a href="#">Contact</a></div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Bell Curves. All rights reserved.</p>
+    <p>NYC · Privacy · Terms · Contact us</p>
+  </div>
+
+</div>
+
+<script>
+  function toggleFaq(btn) {
+    var ans = btn.nextElementSibling;
+    var chev = btn.querySelector('.faq-chevron');
+    var open = ans.style.display !== 'none';
+    ans.style.display = open ? 'none' : 'block';
+    chev.classList.toggle('open', !open);
+  }
+</script>
+</body>
+</html>

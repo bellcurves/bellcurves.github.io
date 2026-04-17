@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bell Curves — Redesign</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; }
+  :root {
+    --color-background-primary: #fff;
+    --color-background-secondary: #f6f6f4;
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #666;
+    --color-text-tertiary: #999;
+    --color-border-tertiary: rgba(0,0,0,0.1);
+    --color-border-secondary: rgba(0,0,0,0.2);
+    --color-border-primary: rgba(0,0,0,0.3);
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+  }
+
+  .bc-wrap { background: var(--color-background-primary); color: var(--color-text-primary); max-width: 1100px; margin: 0 auto; }
+
+  .bc-nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 40px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .bc-logo { font-size: 17px; font-weight: 500; letter-spacing: -0.3px; }
+  .bc-logo span { color: #1D9E75; }
+  .bc-nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--color-text-secondary); }
+  .bc-nav-links a { text-decoration: none; color: inherit; cursor: pointer; }
+  .bc-nav-links a:hover { color: var(--color-text-primary); }
+  .bc-nav-ctas { display: flex; gap: 10px; align-items: center; }
+  .btn-ghost { font-size: 13px; padding: 7px 16px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: none; color: var(--color-text-primary); cursor: pointer; }
+  .btn-ghost:hover { background: var(--color-background-secondary); }
+  .btn-primary { font-size: 13px; padding: 7px 18px; background: #1D9E75; border: none; border-radius: var(--border-radius-md); color: #fff; cursor: pointer; font-weight: 500; }
+  .btn-primary:hover { background: #0F6E56; }
+
+  .bc-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; padding: 72px 40px 64px; }
+  .bc-hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: #E1F5EE; color: #0F6E56; font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 100px; margin-bottom: 20px; }
+  .bc-hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: #1D9E75; }
+  .bc-hero h1 { font-size: 42px; font-weight: 500; line-height: 1.15; letter-spacing: -0.8px; margin-bottom: 18px; }
+  .bc-hero h1 em { font-style: normal; color: #1D9E75; }
+  .bc-hero p { font-size: 16px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 28px; max-width: 440px; }
+  .bc-hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-lg { font-size: 14px; padding: 11px 24px; border-radius: var(--border-radius-md); cursor: pointer; font-weight: 500; }
+  .btn-green { background: #1D9E75; border: none; color: #fff; }
+  .btn-green:hover { background: #0F6E56; }
+  .btn-outline { background: none; border: 0.5px solid var(--color-border-primary); color: var(--color-text-primary); }
+  .btn-outline:hover { background: var(--color-background-secondary); }
+  .bc-hero-tags { display: flex; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
+  .bc-tag { font-size: 12px; padding: 5px 11px; border: 0.5px solid var(--color-border-tertiary); border-radius: 100px; color: var(--color-text-secondary); background: var(--color-background-secondary); }
+
+  .bc-hero-visual { position: relative; }
+  .bc-hero-img-wrap { border-radius: 20px; overflow: hidden; background: #E1F5EE; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; }
+  .bc-hero-stat { position: absolute; bottom: -16px; left: -16px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  .bc-hero-stat-num { font-size: 22px; font-weight: 500; color: #1D9E75; }
+  .bc-hero-stat-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .bc-hero-stat2 { position: absolute; top: -16px; right: -16px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+  .bc-logos { padding: 32px 40px; border-top: 0.5px solid var(--color-border-tertiary); border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .bc-logos-label { font-size: 12px; color: var(--color-text-tertiary); text-align: center; margin-bottom: 18px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .bc-logos-row { display: flex; align-items: center; justify-content: center; gap: 36px; flex-wrap: wrap; }
+  .bc-logo-pill { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); padding: 6px 16px; border: 0.5px solid var(--color-border-tertiary); border-radius: 100px; }
+
+  .bc-audience { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 64px 40px 0; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-xl); overflow: hidden; }
+  .bc-audience-pane { padding: 48px; }
+  .bc-audience-pane:first-child { border-right: 0.5px solid var(--color-border-tertiary); }
+  .bc-audience-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 16px; }
+  .bc-audience-pane h2 { font-size: 24px; font-weight: 500; line-height: 1.25; margin-bottom: 12px; }
+  .bc-audience-pane p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 20px; }
+  .bc-audience-features { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  .bc-audience-features li { font-size: 13px; color: var(--color-text-secondary); display: flex; align-items: center; gap: 8px; }
+  .bc-check { width: 16px; height: 16px; border-radius: 50%; background: #E1F5EE; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .bc-check svg { width: 9px; height: 9px; }
+  .bc-audience-pane.schools { background: #04342C; color: #fff; }
+  .bc-audience-pane.schools .bc-audience-tag { color: #5DCAA5; }
+  .bc-audience-pane.schools h2 { color: #fff; }
+  .bc-audience-pane.schools p { color: #9FE1CB; }
+  .bc-audience-pane.schools .bc-audience-features li { color: #9FE1CB; }
+  .bc-audience-pane.schools .bc-check { background: #0F6E56; }
+  .btn-white { background: #fff; color: #04342C; border: none; font-size: 13px; padding: 9px 20px; border-radius: var(--border-radius-md); font-weight: 500; cursor: pointer; }
+  .btn-white:hover { background: #E1F5EE; }
+
+  .bc-features { padding: 80px 40px; }
+  .bc-section-label { font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #1D9E75; margin-bottom: 12px; }
+  .bc-section-title { font-size: 32px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 12px; }
+  .bc-section-sub { font-size: 16px; color: var(--color-text-secondary); line-height: 1.7; max-width: 520px; margin-bottom: 48px; }
+  .bc-features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--color-border-tertiary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-xl); overflow: hidden; }
+  .bc-feature { background: var(--color-background-primary); padding: 32px 24px; }
+  .bc-feature-icon { width: 36px; height: 36px; border-radius: var(--border-radius-md); background: #E1F5EE; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .bc-feature-icon svg { width: 18px; height: 18px; }
+  .bc-feature h3 { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+  .bc-feature p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+
+  .bc-courses { padding: 0 40px 80px; }
+  .bc-courses-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+  .bc-courses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .bc-course-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-xl); overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
+  .bc-course-card:hover { border-color: var(--color-border-secondary); }
+  .bc-course-img { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 500; }
+  .bc-course-img.sat { background: #E1F5EE; color: #1D9E75; }
+  .bc-course-img.shsat { background: #E6F1FB; color: #185FA5; }
+  .bc-course-img.psat { background: #EEEDFE; color: #534AB7; }
+  .bc-course-img.regents { background: #FAEEDA; color: #BA7517; }
+  .bc-course-body { padding: 20px; }
+  .bc-course-body h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .bc-course-body p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: 14px; }
+  .bc-course-footer { display: flex; justify-content: space-between; align-items: center; }
+  .bc-course-price { font-size: 16px; font-weight: 500; }
+  .bc-course-link { font-size: 12px; color: #1D9E75; cursor: pointer; }
+
+  .bc-social-proof { background: var(--color-background-secondary); margin: 0 40px; border-radius: var(--border-radius-xl); padding: 64px; margin-bottom: 80px; }
+  .bc-testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+  .bc-testimonial { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 24px; }
+  .bc-testimonial-quote { font-size: 14px; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 20px; }
+  .bc-testimonial-author { display: flex; align-items: center; gap: 10px; }
+  .bc-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+  .bc-avatar.green { background: #E1F5EE; color: #0F6E56; }
+  .bc-avatar.blue { background: #E6F1FB; color: #185FA5; }
+  .bc-avatar.purple { background: #EEEDFE; color: #534AB7; }
+  .bc-author-name { font-size: 13px; font-weight: 500; }
+  .bc-author-role { font-size: 12px; color: var(--color-text-tertiary); }
+
+  .bc-instructors { padding: 0 40px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .bc-instructors-text h2 { font-size: 32px; font-weight: 500; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 16px; }
+  .bc-instructors-text p { font-size: 15px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 24px; }
+  .bc-instructor-faces { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .bc-instructor-face { aspect-ratio: 1; border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .bc-face-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 500; }
+  .bc-face-placeholder.f1 { background: #E1F5EE; color: #0F6E56; }
+  .bc-face-placeholder.f2 { background: #E6F1FB; color: #185FA5; }
+  .bc-face-placeholder.f3 { background: #EEEDFE; color: #534AB7; }
+  .bc-face-placeholder.f4 { background: #FAEEDA; color: #BA7517; }
+  .bc-face-placeholder.f5 { background: #FBEAF0; color: #993556; }
+  .bc-face-placeholder.f6 { background: #E1F5EE; color: #0F6E56; }
+  .bc-face-placeholder.f7 { background: #FCEBEB; color: #A32D2D; }
+  .bc-face-placeholder.f8 { background: #EAF3DE; color: #3B6D11; }
+
+  .bc-cta-banner { margin: 0 40px 80px; background: #04342C; border-radius: var(--border-radius-xl); padding: 64px; display: flex; justify-content: space-between; align-items: center; gap: 40px; }
+  .bc-cta-banner h2 { font-size: 28px; font-weight: 500; color: #fff; line-height: 1.25; max-width: 420px; }
+  .bc-cta-banner p { font-size: 15px; color: #9FE1CB; margin-top: 10px; max-width: 380px; }
+  .bc-cta-buttons { display: flex; gap: 12px; flex-shrink: 0; }
+
+  .bc-footer { border-top: 0.5px solid var(--color-border-tertiary); padding: 48px 40px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+  .bc-footer-brand p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; margin-top: 10px; max-width: 240px; }
+  .bc-footer-col h4 { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-tertiary); margin-bottom: 14px; }
+  .bc-footer-col a { display: block; font-size: 13px; color: var(--color-text-secondary); text-decoration: none; margin-bottom: 8px; cursor: pointer; }
+  .bc-footer-col a:hover { color: var(--color-text-primary); }
+  .bc-footer-bottom { border-top: 0.5px solid var(--color-border-tertiary); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .bc-footer-bottom p { font-size: 12px; color: var(--color-text-tertiary); }
+</style>
+</head>
+<body>
+<div class="bc-wrap">
+
+  <nav class="bc-nav">
+    <div class="bc-logo">bell<span>curves</span></div>
+    <div class="bc-nav-links">
+      <a href="#">Tutoring</a>
+      <a href="#">Test prep</a>
+      <a href="#">For schools</a>
+      <a href="#">About</a>
+    </div>
+    <div class="bc-nav-ctas">
+      <button class="btn-ghost">Log in</button>
+      <button class="btn-primary">Get started</button>
+    </div>
+  </nav>
+
+  <section class="bc-hero">
+    <div class="bc-hero-left">
+      <div class="bc-hero-eyebrow"><div class="bc-hero-eyebrow-dot"></div>NYC's most trusted test prep</div>
+      <h1>Built for where your child <em>actually is</em></h1>
+      <p>Expert-designed courses and one-on-one tutoring for NYC students — from their real starting point, not somewhere else.</p>
+      <div class="bc-hero-ctas">
+        <button class="btn-lg btn-green">Explore courses →</button>
+        <button class="btn-lg btn-outline">For schools</button>
+      </div>
+      <div class="bc-hero-tags">
+        <span class="bc-tag">SAT</span>
+        <span class="bc-tag">SHSAT</span>
+        <span class="bc-tag">PSAT</span>
+        <span class="bc-tag">Regents</span>
+        <span class="bc-tag">SAT/ISEE</span>
+      </div>
+    </div>
+    <div class="bc-hero-visual">
+      <div class="bc-hero-img-wrap">
+        <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <rect width="480" height="360" fill="#E1F5EE"/>
+          <ellipse cx="240" cy="200" rx="120" ry="130" fill="#9FE1CB" opacity="0.4"/>
+          <rect x="130" y="80" width="220" height="200" rx="16" fill="#fff" opacity="0.9"/>
+          <rect x="150" y="100" width="180" height="12" rx="4" fill="#1D9E75" opacity="0.3"/>
+          <rect x="150" y="120" width="140" height="8" rx="4" fill="#5DCAA5" opacity="0.4"/>
+          <rect x="150" y="136" width="160" height="8" rx="4" fill="#5DCAA5" opacity="0.3"/>
+          <rect x="150" y="160" width="180" height="80" rx="8" fill="#E1F5EE"/>
+          <text x="240" y="208" text-anchor="middle" font-size="28" font-weight="500" fill="#1D9E75" font-family="-apple-system,sans-serif">1480</text>
+          <text x="240" y="228" text-anchor="middle" font-size="11" fill="#0F6E56" font-family="-apple-system,sans-serif">SAT Score</text>
+          <rect x="150" y="254" width="80" height="28" rx="6" fill="#1D9E75"/>
+          <text x="190" y="272" text-anchor="middle" font-size="11" fill="#fff" font-weight="500" font-family="-apple-system,sans-serif">View plan</text>
+        </svg>
+      </div>
+      <div class="bc-hero-stat">
+        <div class="bc-hero-stat-num">+180pts</div>
+        <div class="bc-hero-stat-label">avg. score increase</div>
+      </div>
+      <div class="bc-hero-stat2">
+        <div class="bc-hero-stat-num" style="color:#1a1a1a;font-size:18px;">10,000+</div>
+        <div class="bc-hero-stat-label">students helped</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="bc-logos">
+    <div class="bc-logos-label">Trusted by NYC schools &amp; organizations</div>
+    <div class="bc-logos-row">
+      <span class="bc-logo-pill">NYC DOE</span>
+      <span class="bc-logo-pill">KIPP NYC</span>
+      <span class="bc-logo-pill">Success Academy</span>
+      <span class="bc-logo-pill">Uncommon Schools</span>
+      <span class="bc-logo-pill">Charter networks</span>
+    </div>
+  </div>
+
+  <div class="bc-audience">
+    <div class="bc-audience-pane schools">
+      <div class="bc-audience-tag">For schools &amp; organizations</div>
+      <h2>Partner with us to serve your students</h2>
+      <p>We work directly with public schools, charter networks, and educational institutions to deliver customized programs at scale.</p>
+      <ul class="bc-audience-features">
+        <li><span class="bc-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#5DCAA5" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span>Bulk enrollment &amp; billing</li>
+        <li><span class="bc-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#5DCAA5" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span>Dedicated account manager</li>
+        <li><span class="bc-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#5DCAA5" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span>Progress reporting &amp; analytics</li>
+      </ul>
+      <button class="btn-white">Explore school programs →</button>
+    </div>
+    <div class="bc-audience-pane">
+      <div class="bc-audience-tag" style="color:#1D9E75;">For parents &amp; families</div>
+      <h2>Give your child the edge they deserve</h2>
+      <p>Expert prep tailored to your child's level — flexible scheduling, proven methods, and instructors who know NYC tests inside and out.</p>
+      <ul class="bc-audience-features">
+        <li><span class="bc-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span>Live online &amp; in-person options</li>
+        <li><span class="bc-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span>Diagnostic to identify gaps</li>
+        <li><span class="bc-check"><svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 4-4" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span>Parent progress updates</li>
+      </ul>
+      <button class="btn-lg btn-green" style="font-size:13px;padding:9px 20px;">Find a course →</button>
+    </div>
+  </div>
+
+  <section class="bc-features">
+    <div class="bc-section-label">How it works</div>
+    <div class="bc-section-title">Everything to reach your target score</div>
+    <div class="bc-section-sub">Proven learning frameworks, expert instructors, and adaptive practice — built around each student's real starting point.</div>
+    <div class="bc-features-grid">
+      <div class="bc-feature">
+        <div class="bc-feature-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="#1D9E75" stroke-width="1.5"/><path d="M5 9h8M5 6h5M5 12h6" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+        <h3>Structured learning</h3>
+        <p>Step-by-step lessons designed to build strong conceptual foundations before moving to advanced practice.</p>
+      </div>
+      <div class="bc-feature">
+        <div class="bc-feature-icon"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#1D9E75" stroke-width="1.5"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Expert instructors</h3>
+        <p>Learn from instructors who scored in the top percentile and specialize in NYC standardized tests.</p>
+      </div>
+      <div class="bc-feature">
+        <div class="bc-feature-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2L11.4 7.2L17 8.1L13 12L13.9 17.5L9 15L4.1 17.5L5 12L1 8.1L6.6 7.2L9 2Z" stroke="#1D9E75" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+        <h3>Adaptive practice</h3>
+        <p>Practice questions and drills that help you recognize patterns and improve problem-solving speed.</p>
+      </div>
+      <div class="bc-feature">
+        <div class="bc-feature-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M4 14s0-4 5-4 5 4 5 4" stroke="#1D9E75" stroke-width="1.4" stroke-linecap="round"/><path d="M9 10V4M6 7l3-3 3 3" stroke="#1D9E75" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Support &amp; guidance</h3>
+        <p>Continuous feedback and guidance to keep you on track throughout your entire preparation journey.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bc-courses">
+    <div class="bc-courses-header">
+      <div>
+        <div class="bc-section-label">Courses</div>
+        <div class="bc-section-title" style="margin-bottom:0;">Popular test prep courses</div>
+      </div>
+      <button class="btn-ghost">View all courses →</button>
+    </div>
+    <div class="bc-courses-grid">
+      <div class="bc-course-card">
+        <div class="bc-course-img sat"><span>SAT</span></div>
+        <div class="bc-course-body">
+          <h3>SAT preparation</h3>
+          <p>Targeted strategies for digital SAT — covering math, reading, and writing from the ground up.</p>
+          <div class="bc-course-footer">
+            <span class="bc-course-price">$55</span>
+            <span class="bc-course-link">View program →</span>
+          </div>
+        </div>
+      </div>
+      <div class="bc-course-card">
+        <div class="bc-course-img shsat"><span>SHSAT</span></div>
+        <div class="bc-course-body">
+          <h3>SHSAT preparation</h3>
+          <p>Purpose-built for students aiming to score for NYC's specialized high schools.</p>
+          <div class="bc-course-footer">
+            <span class="bc-course-price">$55</span>
+            <span class="bc-course-link">View program →</span>
+          </div>
+        </div>
+      </div>
+      <div class="bc-course-card">
+        <div class="bc-course-img psat"><span>PSAT</span></div>
+        <div class="bc-course-body">
+          <h3>PSAT preparation</h3>
+          <p>Ideal for 9th and 10th graders preparing for National Merit consideration and the SAT pipeline.</p>
+          <div class="bc-course-footer">
+            <span class="bc-course-price">$55</span>
+            <span class="bc-course-link">View program →</span>
+          </div>
+        </div>
+      </div>
+      <div class="bc-course-card">
+        <div class="bc-course-img regents"><span>SSA/ISEE</span></div>
+        <div class="bc-course-body">
+          <h3>SSA/ISEE preparation</h3>
+          <p>Comprehensive prep for NYC middle school admissions and independent school entrance exams.</p>
+          <div class="bc-course-footer">
+            <span class="bc-course-price">$55</span>
+            <span class="bc-course-link">View program →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="bc-social-proof">
+    <div class="bc-section-label">Student stories</div>
+    <div class="bc-section-title">What our students are saying</div>
+    <div class="bc-testimonials">
+      <div class="bc-testimonial">
+        <div class="bc-testimonial-quote">"The structured lessons and practice sessions helped me increase my score faster than expected. Instructors explain complex concepts in a simple way."</div>
+        <div class="bc-testimonial-author">
+          <div class="bc-avatar green">ER</div>
+          <div><div class="bc-author-name">Emily R.</div><div class="bc-author-role">SAT student</div></div>
+        </div>
+      </div>
+      <div class="bc-testimonial">
+        <div class="bc-testimonial-quote">"The tutoring sessions were extremely helpful. I felt more confident going into the exam and achieved my target score."</div>
+        <div class="bc-testimonial-author">
+          <div class="bc-avatar blue">DM</div>
+          <div><div class="bc-author-name">Daniel M.</div><div class="bc-author-role">SHSAT student</div></div>
+        </div>
+      </div>
+      <div class="bc-testimonial">
+        <div class="bc-testimonial-quote">"The study materials and practice questions closely matched the real exam. Highly recommended for anyone preparing seriously."</div>
+        <div class="bc-testimonial-author">
+          <div class="bc-avatar purple">SL</div>
+          <div><div class="bc-author-name">Sophia L.</div><div class="bc-author-role">SSAT student</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="bc-instructors">
+    <div class="bc-instructors-text">
+      <div class="bc-section-label">Instructors</div>
+      <h2>Learn from expert instructors</h2>
+      <p>With years of experience teaching standardized tests, our instructors focus on simplifying complex concepts and guiding students through effective test-taking strategies. Many are products of the same NYC public school system — they teach it from the inside out.</p>
+      <div style="display:flex;gap:12px;">
+        <button class="btn-lg btn-green" style="font-size:13px;padding:9px 20px;">Meet our team →</button>
+        <button class="btn-lg btn-outline" style="font-size:13px;padding:9px 20px;">Learn more</button>
+      </div>
+    </div>
+    <div class="bc-instructor-faces">
+      <div class="bc-instructor-face"><div class="bc-face-placeholder f1">JA</div></div>
+      <div class="bc-instructor-face"><div class="bc-face-placeholder f2">MK</div></div>
+      <div class="bc-instructor-face"><div class="bc-face-placeholder f3">DP</div></div>
+      <div class="bc-instructor-face"><div class="bc-face-placeholder f4">RS</div></div>
+      <div class="bc-instructor-face"><div class="bc-face-placeholder f5">TW</div></div>
+      <div class="bc-instructor-face"><div class="bc-face-placeholder f6">NB</div></div>
+      <div class="bc-instructor-face"><div class="bc-face-placeholder f7">CL</div></div>
+      <div class="bc-instructor-face"><div class="bc-face-placeholder f8">AF</div></div>
+    </div>
+  </section>
+
+  <div class="bc-cta-banner">
+    <div>
+      <h2>Ready to get started?</h2>
+      <p>Join thousands of NYC students and families building toward their target score — from exactly where they are today.</p>
+    </div>
+    <div class="bc-cta-buttons">
+      <button class="btn-white">Enroll now →</button>
+      <button style="background:none;border:0.5px solid #5DCAA5;color:#9FE1CB;font-size:13px;padding:9px 20px;border-radius:8px;cursor:pointer;">For schools</button>
+    </div>
+  </div>
+
+  <footer class="bc-footer">
+    <div class="bc-footer-brand">
+      <div class="bc-logo">bell<span>curves</span></div>
+      <p>NYC test prep built for where your child actually is — expert courses, tutoring, and proven study tools.</p>
+    </div>
+    <div class="bc-footer-col">
+      <h4>Pages</h4>
+      <a href="#">Home</a><a href="#">About</a><a href="#">Tutoring</a><a href="#">Courses</a>
+    </div>
+    <div class="bc-footer-col">
+      <h4>Other</h4>
+      <a href="#">Organizations</a><a href="#">Partners</a>
+    </div>
+    <div class="bc-footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy policy</a><a href="#">Terms of service</a><a href="#">Contact</a>
+    </div>
+  </footer>
+
+  <div class="bc-footer-bottom">
+    <p>© 2026 Bell Curves. All rights reserved.</p>
+    <p style="color:#999;">NYC · Privacy · Terms · Contact us</p>
+  </div>
+
+</div>
+</body>
+</html>
