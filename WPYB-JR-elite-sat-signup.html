@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Elite SAT Prep – Apply Now</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0f2557;
+    --gold: #c9a84c;
+    --gold-light: #f5e9c8;
+    --bg: #f7f6f2;
+    --white: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b6b80;
+    --border: #ddd8cc;
+    --success: #2d7a4f;
+    --radius: 12px;
+    --input-h: 52px;
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 40px;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    background: var(--navy);
+    color: #fff;
+    padding: 32px 20px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 24px;
+    background: var(--bg);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 7vw, 42px);
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 100px;
+  }
+  .pill strong { color: var(--gold); }
+
+  /* ── SEATS COUNTER ── */
+  .seats-bar {
+    background: var(--gold-light);
+    border-bottom: 1px solid var(--gold);
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+  }
+  .seats-bar span { color: #c0392b; font-weight: 700; }
+
+  /* ── FORM CARD ── */
+  .form-wrap {
+    max-width: 480px;
+    margin: 28px auto 0;
+    padding: 0 16px;
+  }
+
+  .form-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 24px 32px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(15,37,87,0.07);
+  }
+
+  .form-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gold-light);
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  label .req { color: #c0392b; margin-left: 2px; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select {
+    width: 100%;
+    height: var(--input-h);
+    padding: 0 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: #fafaf8;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input:focus, select:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(15,37,87,0.08);
+    background: #fff;
+  }
+  input::placeholder { color: #b0afc0; }
+
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: '▾';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+    font-size: 16px;
+  }
+  select { padding-right: 40px; cursor: pointer; }
+
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0 20px;
+  }
+
+  /* ── CONSENT ── */
+  .consent {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 22px;
+  }
+  .consent input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin-top: 1px;
+    accent-color: var(--navy);
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .consent label {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+  }
+  .consent label a { color: var(--navy); }
+
+  /* ── SUBMIT ── */
+  .btn-submit {
+    width: 100%;
+    height: 54px;
+    background: var(--navy);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-submit:hover { background: #162f6e; }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { background: #9a9aaa; cursor: not-allowed; }
+
+  .btn-submit .btn-text { transition: opacity 0.2s; }
+  .btn-submit .btn-loading {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-submit.loading .btn-text { opacity: 0; }
+  .btn-submit.loading .btn-loading { display: flex; }
+
+  .spinner {
+    width: 22px; height: 22px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── SUCCESS STATE ── */
+  .success-card {
+    display: none;
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 40px 24px;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(15,37,87,0.07);
+  }
+  .success-card.show { display: block; }
+  .success-icon {
+    width: 64px; height: 64px;
+    background: #e8f5ee;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+  }
+  .success-card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .success-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .success-card .student-name {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── ERROR ── */
+  .form-error {
+    display: none;
+    background: #fdf0ef;
+    border: 1px solid #f5c6c3;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #c0392b;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .form-error.show { display: block; }
+
+  /* ── FOOTER NOTE ── */
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 20px;
+    line-height: 1.6;
+    padding: 0 8px;
+  }
+  .footer-note a { color: var(--navy); text-decoration: none; }
+
+  /* ── SETUP BANNER ── */
+  .setup-banner {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 12px;
+    color: #7a5f00;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .setup-banner strong { display: block; margin-bottom: 4px; font-size: 13px; }
+  .setup-banner code {
+    background: rgba(0,0,0,0.08);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+
+  @media (max-width: 360px) {
+    .row-2 { grid-template-columns: 1fr; }
+    .form-card { padding: 22px 16px 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Summer 2026 · Now Enrolling</div>
+  <h1><span>Elite</span> SAT Prep</h1>
+  <p>A partnership with the City of White Plains Youth Bureau<br>& Bell Curves Educational Services</p>
+  <div class="hero-pills">
+    <span class="pill">📍 College of Westchester</span>
+    <span class="pill">🗓 <strong>8 Weeks</strong> · Jul–Aug</span>
+    <span class="pill">✅ <strong>Fully Funded</strong></span>
+    <span class="pill">📚 Rising 11th &amp; 12th Graders</span>
+  </div>
+</div>
+
+<!-- SEATS ALERT -->
+<div class="seats-bar">
+  ⚡ <span>Only 30 seats available</span> — selective enrollment, apply early
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+
+
+
+  <!-- SUCCESS STATE -->
+  <div class="success-card" id="successCard">
+    <div class="success-icon">🎓</div>
+    <h2>Application Received!</h2>
+    <p>Thanks, <span class="student-name" id="successName">there</span>!<br>
+    Your application for the <strong>Elite SAT Prep</strong> program has been submitted.<br><br>
+    Jason Roberts will be in touch at your email address. Remember — only 30 seats are available, so you're smart to apply early.</p>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="form-card" id="formCard">
+
+    <div class="form-section-label">Student Information</div>
+
+    <div class="form-error" id="formError">
+      Something went wrong. Please try again or email <a href="mailto:jaroberts1216@yahoo.com">jaroberts1216@yahoo.com</a> directly.
+    </div>
+
+    <form id="signupForm"
+          action="https://formspree.io/f/maqaqppv"
+          method="POST"
+          novalidate>
+
+      <!-- Hidden fields for context -->
+      <input type="hidden" name="_subject" value="New Elite SAT Prep Application – Summer 2026"/>
+      <input type="hidden" name="Program" value="Elite SAT Prep Summer 2026"/>
+      <input type="hidden" name="_replyto" value=""/>
+
+      <div class="field">
+        <label for="studentName">Student Full Name <span class="req">*</span></label>
+        <input type="text" id="studentName" name="Student Name"
+               placeholder="First and last name" required autocomplete="name"/>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="grade">Current Grade <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select id="grade" name="Current Grade" required>
+              <option value="" disabled selected>Select…</option>
+              <option value="10th (Rising 11th)">10th → Rising 11th</option>
+              <option value="11th (Rising 12th)">11th → Rising 12th</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="phone">Phone Number <span class="req">*</span></label>
+          <input type="tel" id="phone" name="Phone Number"
+                 placeholder="(914) 555-0100" required autocomplete="tel"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email Address <span class="req">*</span></label>
+        <input type="email" id="email" name="Email Address"
+               placeholder="student@email.com" required autocomplete="email"/>
+      </div>
+
+      <div class="field">
+        <label for="school">Current School <span class="req">*</span></label>
+        <input type="text" id="school" name="School"
+               placeholder="e.g. White Plains High School" required/>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="consent">
+        <input type="checkbox" id="consent" name="Consent" value="Yes" required/>
+        <label for="consent">
+          I confirm this student is a rising 11th or 12th grader and I agree to be contacted by Jason Roberts at WPYB regarding this program.
+        </label>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="btn-text">Submit Application →</span>
+        <span class="btn-loading"><div class="spinner"></div></span>
+      </button>
+
+    </form>
+  </div>
+
+  <div class="footer-note">
+    Questions? Contact <a href="mailto:jaroberts1216@yahoo.com">Jason Roberts</a><br>
+    jaroberts1216@yahoo.com · White Plains Youth Bureau
+  </div>
+
+</div>
+
+<script>
+  const form = document.getElementById('signupForm');
+  const btn = document.getElementById('submitBtn');
+  const formCard = document.getElementById('formCard');
+  const successCard = document.getElementById('successCard');
+  const formError = document.getElementById('formError');
+  const successName = document.getElementById('successName');
+
+  // Basic client-side validation
+  function validate() {
+    const fields = form.querySelectorAll('[required]');
+    for (let f of fields) {
+      if (f.type === 'checkbox' && !f.checked) {
+        f.focus(); return false;
+      }
+      if (f.value.trim() === '') {
+        f.focus(); return false;
+      }
+      if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value)) {
+        f.focus(); return false;
+      }
+    }
+    return true;
+  }
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    formError.classList.remove('show');
+
+    if (!validate()) {
+      formError.textContent = 'Please fill in all required fields before submitting.';
+      formError.classList.add('show');
+      return;
+    }
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    const name = document.getElementById('studentName').value.trim();
+
+    try {
+      const data = new FormData(form);
+      const res = await fetch(form.getAttribute('action'), {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        showSuccess(name);
+      } else {
+        const json = await res.json();
+        const msg = (json.errors || []).map(e => e.message).join(', ') || 'Server error';
+        throw new Error(msg);
+      }
+    } catch(err) {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      formError.textContent = 'Something went wrong. Please try again or email jaroberts1216@yahoo.com directly.';
+      formError.classList.add('show');
+    }
+  });
+
+  function showSuccess(name) {
+    successName.textContent = name || 'there';
+    formCard.style.display = 'none';
+    successCard.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
