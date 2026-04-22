@@ -17,7 +17,6 @@
     --text: #1a1a2e;
     --muted: #6b6b80;
     --border: #ddd8cc;
-    --success: #2d7a4f;
     --radius: 12px;
     --input-h: 52px;
   }
@@ -32,7 +31,6 @@
     padding: 0 0 40px;
   }
 
-  /* ── HEADER ── */
   .hero {
     background: var(--navy);
     color: #fff;
@@ -92,7 +90,6 @@
   }
   .pill strong { color: var(--gold); }
 
-  /* ── SEATS COUNTER ── */
   .seats-bar {
     background: var(--gold-light);
     border-bottom: 1px solid var(--gold);
@@ -105,7 +102,6 @@
   }
   .seats-bar span { color: #c0392b; font-weight: 700; }
 
-  /* ── FORM CARD ── */
   .form-wrap {
     max-width: 480px;
     margin: 28px auto 0;
@@ -127,13 +123,13 @@
     text-transform: uppercase;
     color: var(--gold);
     margin-bottom: 18px;
+    margin-top: 24px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--gold-light);
   }
+  .form-section-label:first-child { margin-top: 0; }
 
-  .field {
-    margin-bottom: 18px;
-  }
+  .field { margin-bottom: 18px; }
 
   label {
     display: block;
@@ -147,6 +143,7 @@
   input[type="text"],
   input[type="email"],
   input[type="tel"],
+  input[type="number"],
   select {
     width: 100%;
     height: var(--input-h);
@@ -188,14 +185,50 @@
     gap: 12px;
   }
 
-  /* ── DIVIDER ── */
+  /* Radio group */
+  .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    cursor: pointer;
+    background: #fafaf8;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color 0.2s, background 0.2s;
+    margin: 0;
+  }
+  .radio-group input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    accent-color: var(--navy);
+    margin: 0;
+  }
+  .radio-group input[type="radio"]:checked + span {
+    color: var(--navy);
+    font-weight: 500;
+  }
+  .radio-group label:has(input:checked) {
+    border-color: var(--navy);
+    background: #f0f4ff;
+  }
+
   .divider {
     border: none;
     border-top: 1px solid var(--border);
     margin: 24px 0 20px;
   }
 
-  /* ── CONSENT ── */
   .consent {
     display: flex;
     gap: 12px;
@@ -209,7 +242,6 @@
     margin-top: 1px;
     accent-color: var(--navy);
     cursor: pointer;
-    border-radius: 4px;
   }
   .consent label {
     font-size: 12px;
@@ -220,7 +252,6 @@
   }
   .consent label a { color: var(--navy); }
 
-  /* ── SUBMIT ── */
   .btn-submit {
     width: 100%;
     height: 54px;
@@ -240,7 +271,6 @@
   .btn-submit:hover { background: #162f6e; }
   .btn-submit:active { transform: scale(0.98); }
   .btn-submit:disabled { background: #9a9aaa; cursor: not-allowed; }
-
   .btn-submit .btn-text { transition: opacity 0.2s; }
   .btn-submit .btn-loading {
     display: none;
@@ -261,7 +291,6 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── SUCCESS STATE ── */
   .success-card {
     display: none;
     background: var(--white);
@@ -291,12 +320,8 @@
     color: var(--muted);
     line-height: 1.7;
   }
-  .success-card .student-name {
-    color: var(--gold);
-    font-weight: 600;
-  }
+  .success-card .student-name { color: var(--gold); font-weight: 600; }
 
-  /* ── ERROR ── */
   .form-error {
     display: none;
     background: #fdf0ef;
@@ -310,7 +335,6 @@
   }
   .form-error.show { display: block; }
 
-  /* ── FOOTER NOTE ── */
   .footer-note {
     text-align: center;
     font-size: 11px;
@@ -321,25 +345,6 @@
   }
   .footer-note a { color: var(--navy); text-decoration: none; }
 
-  /* ── SETUP BANNER ── */
-  .setup-banner {
-    background: #fff8e1;
-    border: 1px solid #ffe082;
-    border-radius: 8px;
-    padding: 14px 16px;
-    font-size: 12px;
-    color: #7a5f00;
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-  .setup-banner strong { display: block; margin-bottom: 4px; font-size: 13px; }
-  .setup-banner code {
-    background: rgba(0,0,0,0.08);
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-size: 11px;
-  }
-
   @media (max-width: 360px) {
     .row-2 { grid-template-columns: 1fr; }
     .form-card { padding: 22px 16px 26px; }
@@ -348,7 +353,6 @@
 </head>
 <body>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-badge">Summer 2026 · Now Enrolling</div>
   <h1><span>Elite</span> SAT Prep</h1>
@@ -361,17 +365,12 @@
   </div>
 </div>
 
-<!-- SEATS ALERT -->
 <div class="seats-bar">
   ⚡ <span>Only 30 seats available</span> — selective enrollment, apply early
 </div>
 
-<!-- FORM -->
 <div class="form-wrap">
 
-
-
-  <!-- SUCCESS STATE -->
   <div class="success-card" id="successCard">
     <div class="success-icon">🎓</div>
     <h2>Application Received!</h2>
@@ -380,10 +379,7 @@
     Jason Roberts will be in touch at your email address. Remember — only 30 seats are available, so you're smart to apply early.</p>
   </div>
 
-  <!-- FORM CARD -->
   <div class="form-card" id="formCard">
-
-    <div class="form-section-label">Student Information</div>
 
     <div class="form-error" id="formError">
       Something went wrong. Please try again or email <a href="mailto:jaroberts1216@yahoo.com">jaroberts1216@yahoo.com</a> directly.
@@ -394,10 +390,11 @@
           method="POST"
           novalidate>
 
-      <!-- Hidden fields for context -->
       <input type="hidden" name="_subject" value="New Elite SAT Prep Application – Summer 2026"/>
       <input type="hidden" name="Program" value="Elite SAT Prep Summer 2026"/>
-      <input type="hidden" name="_replyto" value=""/>
+
+      <!-- ── SECTION 1: Student Information ── -->
+      <div class="form-section-label">Student Information</div>
 
       <div class="field">
         <label for="studentName">Student Full Name <span class="req">*</span></label>
@@ -417,22 +414,99 @@
           </div>
         </div>
         <div class="field">
-          <label for="phone">Phone Number <span class="req">*</span></label>
-          <input type="tel" id="phone" name="Phone Number"
-                 placeholder="(914) 555-0100" required autocomplete="tel"/>
+          <label for="gpa">Current GPA <span class="req">*</span></label>
+          <input type="text" id="gpa" name="Current GPA"
+                 placeholder="e.g. 3.5" required/>
         </div>
       </div>
 
       <div class="field">
-        <label for="email">Email Address <span class="req">*</span></label>
-        <input type="email" id="email" name="Email Address"
-               placeholder="student@email.com" required autocomplete="email"/>
+        <label for="gender">Gender <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="gender" name="Gender" required>
+            <option value="" disabled selected>Select…</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-binary">Non-binary</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+            <option value="Self-describe">Prefer to self-describe</option>
+          </select>
+        </div>
       </div>
+
+      <div class="field">
+        <label for="language">Primary Language <span class="req">*</span></label>
+        <input type="text" id="language" name="Primary Language"
+               placeholder="e.g. English, Spanish" required/>
+      </div>
+
+      <div class="field">
+        <label>First Generation College Student? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="First Generation College Student" value="Yes" required/><span>Yes</span></label>
+          <label><input type="radio" name="First Generation College Student" value="No"/><span>No</span></label>
+          <label><input type="radio" name="First Generation College Student" value="Not sure"/><span>Not sure</span></label>
+        </div>
+      </div>
+
+      <!-- ── SECTION 2: Contact ── -->
+      <div class="form-section-label">Contact Information</div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="phone">Phone Number <span class="req">*</span></label>
+          <input type="tel" id="phone" name="Phone Number"
+                 placeholder="(914) 555-0100" required autocomplete="tel"/>
+        </div>
+        <div class="field">
+          <label for="email">Email Address <span class="req">*</span></label>
+          <input type="email" id="email" name="Email Address"
+                 placeholder="student@email.com" required autocomplete="email"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="address">Home Address <span class="req">*</span></label>
+        <input type="text" id="address" name="Home Address"
+               placeholder="Street, City, State, ZIP" required autocomplete="street-address"/>
+      </div>
+
+      <div class="field">
+        <label for="emergency">Emergency Contact <span class="req">*</span></label>
+        <input type="text" id="emergency" name="Emergency Contact"
+               placeholder="Name and phone number" required/>
+      </div>
+
+      <!-- ── SECTION 3: School & SAT ── -->
+      <div class="form-section-label">School &amp; SAT Background</div>
 
       <div class="field">
         <label for="school">Current School <span class="req">*</span></label>
         <input type="text" id="school" name="School"
                placeholder="e.g. White Plains High School" required/>
+      </div>
+
+      <div class="field">
+        <label>Have you taken the SAT before? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="Taken SAT Before" value="Yes" required/><span>Yes</span></label>
+          <label><input type="radio" name="Taken SAT Before" value="No"/><span>No</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="targetScore">Target SAT Score</label>
+        <div class="select-wrap">
+          <select id="targetScore" name="Target SAT Score">
+            <option value="" disabled selected>Select a range…</option>
+            <option value="1000–1100">1000–1100</option>
+            <option value="1100–1200">1100–1200</option>
+            <option value="1200–1300">1200–1300</option>
+            <option value="1300–1400">1300–1400</option>
+            <option value="1400–1500">1400–1500</option>
+            <option value="1500+">1500+</option>
+          </select>
+        </div>
       </div>
 
       <hr class="divider"/>
@@ -467,18 +541,21 @@
   const formError = document.getElementById('formError');
   const successName = document.getElementById('successName');
 
-  // Basic client-side validation
   function validate() {
     const fields = form.querySelectorAll('[required]');
     for (let f of fields) {
-      if (f.type === 'checkbox' && !f.checked) {
-        f.focus(); return false;
-      }
-      if (f.value.trim() === '') {
-        f.focus(); return false;
-      }
-      if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value)) {
-        f.focus(); return false;
+      if (f.type === 'checkbox' && !f.checked) { f.focus(); return false; }
+      if (f.type === 'radio') continue;
+      if (f.value.trim() === '') { f.focus(); return false; }
+      if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value)) { f.focus(); return false; }
+    }
+    // Check radio groups
+    const radioGroups = ['First Generation College Student', 'Taken SAT Before'];
+    for (let name of radioGroups) {
+      const checked = form.querySelector(`input[name="${name}"]:checked`);
+      if (!checked) {
+        form.querySelector(`input[name="${name}"]`).focus();
+        return false;
       }
     }
     return true;
