@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test 1 — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal: #1a8a6e;
+    --teal-light: #e6f5f1;
+    --teal-mid: #0f6e56;
+    --teal-dark: #085041;
+    --text: #1a1a1a;
+    --text-2: #5a5a5a;
+    --text-3: #909090;
+    --border: #e4e4e0;
+    --border-2: #d0d0ca;
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --danger: #c0392b;
+    --danger-bg: #fdf0ee;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--teal-dark);
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 20px; height: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .topbar-hamburger { width: 30px; height: 30px; display: flex; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; padding: 4px; }
+  .topbar-hamburger span { display: block; height: 1.5px; background: rgba(255,255,255,0.6); border-radius: 2px; }
+  .topbar-back { color: rgba(255,255,255,0.7); font-size: 18px; cursor: pointer; padding: 4px 8px; }
+  .topbar-title { color: #fff; font-weight: 500; font-size: 15px; }
+  .topbar-course { margin-left: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); color: #fff; font-size: 13px; padding: 4px 12px; border-radius: 6px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .topbar-course svg { opacity: 0.7; }
+
+  /* ── Layout ── */
+  .layout { display: flex; min-height: calc(100vh - 48px); }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 220px; flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px; font-size: 13.5px; color: var(--text-2);
+    cursor: pointer; border-left: 2.5px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: var(--bg); color: var(--text); }
+  .nav-item.active { color: var(--teal); border-left-color: var(--teal); background: var(--teal-light); font-weight: 500; }
+  .nav-icon { width: 16px; height: 16px; opacity: 0.7; flex-shrink: 0; }
+  .nav-item.active .nav-icon { opacity: 1; }
+  .nav-ext { margin-left: auto; width: 14px; height: 14px; opacity: 0.4; }
+
+  /* ── Main ── */
+  .main { flex: 1; padding: 36px 48px; max-width: 900px; }
+  .page-title { font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 28px; letter-spacing: -0.3px; }
+
+  /* ── Settings card ── */
+  .settings-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1px;
+  }
+  .settings-row {
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: start; gap: 24px;
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row.full { grid-template-columns: 1fr; }
+  .setting-label { font-weight: 500; font-size: 14px; color: var(--text); margin-bottom: 3px; }
+  .setting-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+  .setting-desc span { display: block; }
+
+  /* ── Toggle ── */
+  .toggle-wrap { display: flex; align-items: center; gap: 8px; padding-top: 2px; }
+  .toggle { position: relative; width: 42px; height: 24px; cursor: pointer; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-track {
+    position: absolute; inset: 0;
+    background: #d0d0ca; border-radius: 12px;
+    transition: background 0.2s;
+  }
+  .toggle input:checked + .toggle-track { background: var(--teal); }
+  .toggle-thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px; background: #fff;
+    border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+    transition: left 0.2s;
+  }
+  .toggle input:checked ~ .toggle-thumb { left: 21px; }
+  .toggle-label { font-size: 13px; color: var(--text-2); }
+  .toggle-label.on { color: var(--teal); font-weight: 500; }
+
+  /* ── Validity input ── */
+  .validity-input {
+    font-family: 'DM Mono', monospace; font-size: 14px;
+    border: 1px solid var(--border-2); border-radius: var(--radius-sm);
+    padding: 7px 12px; width: 80px; color: var(--text);
+    background: var(--bg); outline: none;
+    transition: border-color 0.15s;
+  }
+  .validity-input:focus { border-color: var(--teal); background: #fff; }
+  .validity-hint { font-size: 11.5px; color: var(--text-3); margin-top: 5px; }
+
+  /* ── Timer section ── */
+  .timer-section { padding: 22px 28px; }
+  .timer-top { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 24px; margin-bottom: 20px; }
+  .timer-global { display: flex; flex-direction: column; gap: 10px; }
+  .timer-global-row { display: flex; align-items: center; gap: 10px; }
+  .timer-sub-label { font-size: 12px; color: var(--text-3); }
+
+  /* ── Student select box ── */
+  .student-timer-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-top: 4px;
+  }
+  .stb-title { font-size: 12px; font-weight: 500; color: var(--text-2); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
+
+  .assign-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+
+  .stb-select {
+    flex: 1; min-width: 160px; height: 36px;
+    font-family: 'DM Sans', sans-serif; font-size: 13.5px;
+    border: 1px solid var(--border-2); border-radius: var(--radius-sm);
+    padding: 0 10px; background: var(--surface); color: var(--text);
+    cursor: pointer; outline: none; transition: border-color 0.15s;
+  }
+  .stb-select:focus { border-color: var(--teal); }
+
+  .time-group { display: flex; align-items: center; gap: 4px; }
+  .time-num {
+    width: 52px; height: 36px; text-align: center;
+    font-family: 'DM Mono', monospace; font-size: 14px;
+    border: 1px solid var(--border-2); border-radius: var(--radius-sm);
+    background: var(--surface); color: var(--text); outline: none;
+    transition: border-color 0.15s;
+  }
+  .time-num:focus { border-color: var(--teal); }
+  .time-sep { font-size: 12px; color: var(--text-3); padding: 0 2px; }
+
+  /* ── Mode toggle (custom time vs no timer) ── */
+  .mode-toggle { display: flex; border: 1px solid var(--border-2); border-radius: var(--radius-sm); overflow: hidden; flex-shrink: 0; height: 36px; }
+  .mode-btn {
+    padding: 0 13px; font-size: 12.5px; font-family: 'DM Sans', sans-serif;
+    background: var(--surface); color: var(--text-2); border: none;
+    cursor: pointer; transition: all 0.13s; white-space: nowrap;
+    display: flex; align-items: center; gap: 5px;
+    border-right: 1px solid var(--border-2);
+  }
+  .mode-btn:last-child { border-right: none; }
+  .mode-btn.active { background: var(--teal); color: #fff; }
+  .mode-btn.active.exempt { background: #7c5cb8; }
+  .mode-btn svg { flex-shrink: 0; }
+
+  .btn-assign {
+    height: 36px; padding: 0 16px;
+    background: var(--teal); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn-assign:hover { background: var(--teal-mid); }
+  .btn-assign.exempt-mode { background: #7c5cb8; }
+  .btn-assign.exempt-mode:hover { background: #6a4da0; }
+  .btn-assign:active { transform: scale(0.97); }
+
+  .time-group { transition: opacity 0.15s; }
+  .time-group.hidden { opacity: 0.3; pointer-events: none; }
+
+  .error-line { font-size: 12px; color: var(--danger); min-height: 18px; padding-left: 2px; }
+
+  /* ── Filter pills ── */
+  .filter-strip { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0 10px; }
+  .fpill {
+    font-size: 12px; padding: 3px 10px; border-radius: 999px;
+    border: 1px solid var(--border-2); background: var(--surface);
+    color: var(--text-2); cursor: pointer; transition: all 0.12s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .fpill:hover { border-color: var(--teal); color: var(--teal); }
+  .fpill.active { background: var(--teal); color: #fff; border-color: var(--teal); font-weight: 500; }
+
+  /* ── Assignment list ── */
+  .assign-list-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .assign-count { font-size: 12px; color: var(--text-3); }
+  .btn-clear-all {
+    font-size: 12px; color: var(--danger); background: none; border: none;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    padding: 2px 4px; border-radius: 4px;
+  }
+  .btn-clear-all:hover { background: var(--danger-bg); }
+
+  .assign-list {
+    display: flex; flex-direction: column; gap: 3px;
+    max-height: 300px; overflow-y: auto;
+    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  }
+  .assign-list::-webkit-scrollbar { width: 4px; }
+  .assign-list::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+
+  .assign-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 12px;
+    animation: slideIn 0.18s ease;
+  }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+  .ava {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+  }
+  .aname { flex: 1; font-size: 13.5px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .atime {
+    font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
+    padding: 3px 10px; border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .btn-rm {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1px solid var(--border-2); background: transparent;
+    color: var(--text-3); cursor: pointer; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.12s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-rm:hover { background: var(--danger-bg); color: var(--danger); border-color: #e8b4b0; }
+
+  .empty-msg { text-align: center; padding: 28px 0; color: var(--text-3); font-size: 13px; }
+
+  /* ── Save bar ── */
+  .save-bar {
+    display: flex; justify-content: flex-end; padding: 20px 28px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-save {
+    height: 38px; padding: 0 24px;
+    background: var(--teal); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .btn-save:hover { background: var(--teal-mid); }
+  .btn-save:active { transform: scale(0.97); }
+
+  .atime-exempt {
+    background: #f0ebfa; color: #6a4da0;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+    padding: 3px 10px; border-radius: 999px; flex-shrink: 0;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .atime-exempt::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #7c5cb8; }
+
+  /* ── Avatar color palette ── */
+  .ava-0 { background: #e6f5f1; color: #0f6e56; }
+  .ava-1 { background: #e8eeff; color: #3348b5; }
+  .ava-2 { background: #fff0e6; color: #b35a00; }
+  .ava-3 { background: #fce8f3; color: #a3266e; }
+  .ava-4 { background: #edf5e1; color: #3e7a0f; }
+  .ava-5 { background: #fef5e6; color: #8f5a00; }
+
+  .atime-0 { background: #e6f5f1; color: #0f6e56; }
+  .atime-1 { background: #e8eeff; color: #3348b5; }
+  .atime-2 { background: #fff0e6; color: #b35a00; }
+  .atime-3 { background: #fce8f3; color: #a3266e; }
+  .atime-4 { background: #edf5e1; color: #3e7a0f; }
+  .atime-5 { background: #fef5e6; color: #8f5a00; }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="topbar-hamburger"><span></span><span></span><span></span></div>
+  <span class="topbar-back">&#8592;</span>
+  <span class="topbar-title">Test 1</span>
+  <div class="topbar-course">
+    QUMS Spring '26
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><polyline points="1,11 5,7 9,9 15,3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Analytics
+    </a>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><line x1="5" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="10" x2="9" y2="10" stroke="currentColor" stroke-width="1.3"/></svg>
+      Data Browser
+    </a>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><polyline points="8,5 8,8 10,10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Practice
+      <svg class="nav-ext" viewBox="0 0 12 12" fill="none"><path d="M4 2h6v6M10 2L2 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </a>
+    <a class="nav-item" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M1 14c0-3 2-5 5-5s5 2 5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M14 14c0-2-1-3.5-2-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      People
+    </a>
+    <a class="nav-item active" href="#">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Settings
+    </a>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+    <h1 class="page-title">Settings</h1>
+
+    <div class="settings-card">
+
+      <!-- Validity Duration -->
+      <div class="settings-row">
+        <div>
+          <div class="setting-label">Validity Duration (in months)</div>
+          <div class="validity-hint">After purchase, the student will only have access to this testpack for 12 months</div>
+        </div>
+        <div>
+          <input class="validity-input" type="number" value="12" min="1">
+        </div>
+      </div>
+
+      <!-- Live Status -->
+      <div class="settings-row">
+        <div>
+          <div class="setting-label">Live Status</div>
+          <div class="setting-desc">Toggle to make this testpack live or not</div>
+        </div>
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" checked onchange="this.parentElement.nextElementSibling.textContent=this.checked?'On':'Off';this.parentElement.nextElementSibling.className='toggle-label '+(this.checked?'on':'')">
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="toggle-label on">On</span>
+        </div>
+      </div>
+
+      <!-- Mark as Free -->
+      <div class="settings-row">
+        <div>
+          <div class="setting-label">Mark as Free</div>
+          <div class="setting-desc">
+            <span>This will enable this test to be taken on the free test taker page.</span>
+            <span>Keep this off if you want people to pay for the test.</span>
+          </div>
+        </div>
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" onchange="this.parentElement.nextElementSibling.textContent=this.checked?'On':'Off';this.parentElement.nextElementSibling.className='toggle-label '+(this.checked?'on':'')">
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="toggle-label">Off</span>
+        </div>
+      </div>
+
+      <!-- Lock Testpack -->
+      <div class="settings-row">
+        <div>
+          <div class="setting-label">Lock Testpack</div>
+          <div class="setting-desc">
+            <span>Turn on to prevent students from taking the test.</span>
+            <span>Note that this will not stop students from seeing the test in the LMS or their score reports.</span>
+          </div>
+        </div>
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" onchange="this.parentElement.nextElementSibling.textContent=this.checked?'On':'Off';this.parentElement.nextElementSibling.className='toggle-label '+(this.checked?'on':'')">
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="toggle-label">Off</span>
+        </div>
+      </div>
+
+      <!-- Timer -->
+      <div class="settings-row full" style="padding-bottom: 0;">
+        <div class="timer-section">
+          <div class="timer-top">
+            <div>
+              <div class="setting-label">Timer</div>
+              <div class="setting-desc">Configure timer behavior for this test</div>
+            </div>
+            <div class="timer-global">
+              <div class="timer-sub-label">Turn off for all students</div>
+              <div class="timer-global-row">
+                <label class="toggle">
+                  <input type="checkbox" onchange="this.parentElement.nextElementSibling.textContent=this.checked?'On':'Off'">
+                  <span class="toggle-track"></span>
+                  <span class="toggle-thumb"></span>
+                </label>
+                <span class="toggle-label">Off</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom per-student timer box -->
+          <div class="student-timer-box">
+            <div class="stb-title">Custom time limits per student</div>
+
+            <div class="assign-row">
+              <select class="stb-select" id="stu-sel">
+                <option value="">Select a student…</option>
+              </select>
+              <!-- Mode toggle -->
+              <div class="mode-toggle">
+                <button class="mode-btn active" id="mode-time" onclick="setMode('time')" title="Set a custom time limit">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><polyline points="6,3 6,6 8,8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Custom time
+                </button>
+                <button class="mode-btn exempt" id="mode-exempt" onclick="setMode('exempt')" title="Remove timer for this student">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><line x1="3" y1="6" x2="9" y2="6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  No timer
+                </button>
+              </div>
+              <div class="time-group" id="time-group">
+                <input class="time-num" type="number" id="h-in" min="0" max="23" value="0" placeholder="0">
+                <span class="time-sep">h</span>
+                <input class="time-num" type="number" id="m-in" min="0" max="59" value="45" placeholder="45">
+                <span class="time-sep">m</span>
+              </div>
+              <button class="btn-assign" id="btn-assign" onclick="addEntry()">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="white" stroke-width="1.8" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Assign
+              </button>
+            </div>
+            <div class="error-line" id="err"></div>
+
+            <div id="list-wrap" style="display:none">
+              <div class="filter-strip" id="filters"></div>
+              <div class="assign-list-header">
+                <span class="assign-count" id="count-lbl"></span>
+                <button class="btn-clear-all" onclick="clearAll()">Clear all</button>
+              </div>
+              <div class="assign-list" id="assign-list"></div>
+            </div>
+            <div class="empty-msg" id="empty-msg">No custom timers assigned yet</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save -->
+      <div class="save-bar">
+        <button class="btn-save">Save Changes</button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const STUDENTS = [
+  "Aaliya Okafor","Benjamin Tran","Camille Dupont","Daniel Morales","Elena Vasquez",
+  "Finn O'Brien","Grace Liu","Hassan Khalil","Isla Mackenzie","Javier Reyes",
+  "Keiko Tanaka","Luca Ferrari","Maya Patel","Noel Andersen","Olivia Nkemdirim",
+  "Pedro Alves","Quinn Shepherd","Rania Haddad","Samuel Johansson","Talia Rosen",
+  "Umar Diallo","Vera Popescu","William Chen","Xena Osei","Yusuf Ibrahim",
+  "Zoey Martins","Arjun Sharma","Beatrix Wolff","Carlos Mendez","Diana Kimura",
+  "Ethan Goldberg","Fatima Al-Rashid","George Petrov","Hannah Mbeki","Ivan Sousa",
+  "Jasmine Torres","Kofi Asante","Leila Nazari","Marco Rossi","Nadia Flint",
+  "Oscar Bergström","Priya Nair","Rasheed Powell","Sofia Antonova","Tariq Hussain",
+  "Uma Krishnan","Victor Oduya","Wren Callahan","Xiulan Fang","Yasmine Belkacem"
+];
+
+// Demo data — mix of custom times and exempt (no timer) students
+let entries = [
+  { name: "Aaliya Okafor",    h: 1,  m: 0,  exempt: false },
+  { name: "Benjamin Tran",    h: 0,  m: 45, exempt: false },
+  { name: "Camille Dupont",   h: 0,  m: 0,  exempt: true  },
+  { name: "Daniel Morales",   h: 0,  m: 45, exempt: false },
+  { name: "Elena Vasquez",    h: 0,  m: 0,  exempt: true  },
+  { name: "Fatima Al-Rashid", h: 1,  m: 0,  exempt: false },
+  { name: "George Petrov",    h: 1,  m: 30, exempt: false },
+  { name: "Hassan Khalil",    h: 0,  m: 30, exempt: false },
+  { name: "Isla Mackenzie",   h: 0,  m: 45, exempt: false },
+  { name: "Javier Reyes",     h: 0,  m: 0,  exempt: true  },
+  { name: "Keiko Tanaka",     h: 0,  m: 30, exempt: false },
+  { name: "Leila Nazari",     h: 1,  m: 30, exempt: false },
+  { name: "Marco Rossi",      h: 0,  m: 45, exempt: false },
+  { name: "Nadia Flint",      h: 1,  m: 0,  exempt: false },
+  { name: "Oscar Bergström",  h: 2,  m: 0,  exempt: false },
+];
+
+let activeFilter = 'all';
+let currentMode = 'time'; // 'time' | 'exempt'
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('mode-time').classList.toggle('active', mode==='time');
+  document.getElementById('mode-exempt').classList.toggle('active', mode==='exempt');
+  document.getElementById('time-group').classList.toggle('hidden', mode==='exempt');
+  const btn = document.getElementById('btn-assign');
+  btn.classList.toggle('exempt-mode', mode==='exempt');
+}
+
+function initSelect() {
+  const sel = document.getElementById('stu-sel');
+  STUDENTS.forEach(n => {
+    const o = document.createElement('option');
+    o.value = o.textContent = n;
+    sel.appendChild(o);
+  });
+}
+
+function initials(n) { return n.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase(); }
+
+function colorIdx(name) {
+  let h = 0;
+  for (let i=0;i<name.length;i++) h = (h*31+name.charCodeAt(i))&0xffff;
+  return h % 6;
+}
+
+function fmt(e) {
+  if (e.exempt) return 'no-timer';
+  if (e.h > 0 && e.m > 0) return e.h+'h '+e.m+'m';
+  if (e.h > 0) return e.h+'h';
+  return e.m+'m';
+}
+
+function fmtLabel(key) {
+  return key === 'no-timer' ? 'No timer' : key;
+}
+
+function addEntry() {
+  const sel = document.getElementById('stu-sel');
+  const h = parseInt(document.getElementById('h-in').value)||0;
+  const m = parseInt(document.getElementById('m-in').value)||0;
+  const err = document.getElementById('err');
+  err.textContent = '';
+  if (!sel.value) { err.textContent = 'Please select a student.'; return; }
+  if (currentMode === 'time' && h===0 && m===0) { err.textContent = 'Time must be greater than 0 minutes.'; return; }
+  if (entries.find(e=>e.name===sel.value)) {
+    const first = sel.value.split(' ')[0];
+    err.textContent = first+' already has an assignment — remove it first to update.'; return;
+  }
+  entries.push({ name: sel.value, h, m, exempt: currentMode==='exempt' });
+  entries.sort((a,b)=>a.name.localeCompare(b.name));
+  sel.value = '';
+  render();
+}
+
+function removeEntry(name) {
+  entries = entries.filter(e=>e.name!==name);
+  if (activeFilter !== 'all') {
+    const grp = buildGroups();
+    if (!grp[activeFilter]) activeFilter = 'all';
+  }
+  render();
+}
+
+function clearAll() { entries = []; activeFilter = 'all'; render(); }
+
+function buildGroups() {
+  const g = {};
+  entries.forEach(e=>{ const k=fmt(e); g[k]=(g[k]||0)+1; });
+  return g;
+}
+
+function render() {
+  const listWrap = document.getElementById('list-wrap');
+  const emptyMsg = document.getElementById('empty-msg');
+  const countLbl = document.getElementById('count-lbl');
+  const filtersEl = document.getElementById('filters');
+  const listEl = document.getElementById('assign-list');
+
+  if (entries.length === 0) {
+    listWrap.style.display = 'none';
+    emptyMsg.style.display = 'block';
+    return;
+  }
+  listWrap.style.display = 'block';
+  emptyMsg.style.display = 'none';
+
+  const groups = buildGroups();
+  const exemptCount = entries.filter(e=>e.exempt).length;
+  const timedCount = entries.length - exemptCount;
+
+  // Summary label
+  let parts = [];
+  if (timedCount > 0) parts.push(timedCount + ' custom time' + (timedCount!==1?'s':''));
+  if (exemptCount > 0) parts.push(exemptCount + ' no-timer' + (exemptCount!==1?'s':''));
+  countLbl.textContent = parts.join(' · ');
+
+  // Filter pills
+  const keys = Object.keys(groups).sort((a,b)=>{
+    if (a==='no-timer') return 1;
+    if (b==='no-timer') return -1;
+    const toMin = s => { const hm=s.match(/(\d+)h/); const mm=s.match(/(\d+)m/); return (hm?parseInt(hm[1])*60:0)+(mm?parseInt(mm[1]):0); };
+    return toMin(a)-toMin(b);
+  });
+
+  if (keys.length <= 1) {
+    filtersEl.style.display = 'none';
+    activeFilter = 'all';
+  } else {
+    filtersEl.style.display = 'flex';
+    filtersEl.innerHTML = '';
+    const all = document.createElement('button');
+    all.className = 'fpill' + (activeFilter==='all'?' active':'');
+    all.textContent = 'All (' + entries.length + ')';
+    all.onclick = () => { activeFilter='all'; render(); };
+    filtersEl.appendChild(all);
+    keys.forEach(k=>{
+      const btn = document.createElement('button');
+      const isExempt = k === 'no-timer';
+      btn.className = 'fpill' + (activeFilter===k?' active':'');
+      if (isExempt && activeFilter===k) btn.style.cssText = 'background:#7c5cb8;border-color:#7c5cb8;color:#fff;font-weight:500';
+      btn.textContent = fmtLabel(k) + ' (' + groups[k] + ')';
+      btn.onclick = () => { activeFilter=k; render(); };
+      filtersEl.appendChild(btn);
+    });
+  }
+
+  // List
+  const visible = activeFilter==='all' ? entries : entries.filter(e=>fmt(e)===activeFilter);
+  listEl.innerHTML = '';
+  if (visible.length === 0) {
+    listEl.innerHTML = '<div class="empty-msg" style="text-align:center;padding:28px 0;color:var(--text-3);font-size:13px;">No students match this filter</div>';
+    return;
+  }
+
+  visible.forEach(e=>{
+    const ci = colorIdx(e.name);
+    const safeName = e.name.replace(/'/g,"\\'");
+    const row = document.createElement('div');
+    row.className = 'assign-item';
+
+    const badge = e.exempt
+      ? '<span class="atime-exempt">No timer</span>'
+      : '<span class="atime atime-'+ci+'">'+fmt(e)+'</span>';
+
+    row.innerHTML =
+      '<div class="ava ava-'+ci+'">'+initials(e.name)+'</div>'+
+      '<span class="aname">'+e.name+'</span>'+
+      badge+
+      '<button class="btn-rm" title="Remove" onclick="removeEntry(\''+safeName+'\')">&times;</button>';
+    listEl.appendChild(row);
+  });
+}
+
+initSelect();
+render();
+</script>
+</body>
+</html>
