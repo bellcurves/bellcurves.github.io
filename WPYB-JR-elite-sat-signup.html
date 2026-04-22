@@ -3,428 +3,211 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>Elite SAT Prep – Apply Now</title>
+<title>Elite SAT Prep - Apply Now</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --navy: #0f2557;
-    --gold: #c9a84c;
-    --gold-light: #f5e9c8;
-    --bg: #f7f6f2;
-    --white: #ffffff;
-    --text: #1a1a2e;
-    --muted: #6b6b80;
-    --border: #ddd8cc;
-    --radius: 12px;
-    --input-h: 52px;
+    --navy: #0f2557; --gold: #c9a84c; --gold-light: #f5e9c8;
+    --bg: #f7f6f2; --white: #fff; --text: #1a1a2e; --muted: #6b6b80;
+    --border: #ddd8cc; --err: #c0392b; --err-bg: #fdf0ef; --err-border: #f5c6c3;
+    --ok: #2d7a4f; --radius: 12px; --input-h: 52px;
   }
-
   html { font-size: 16px; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 0 0 40px;
-  }
-
-  .hero {
-    background: var(--navy);
-    color: #fff;
-    padding: 32px 20px 28px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0; right: 0;
-    height: 24px;
-    background: var(--bg);
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  }
-  .hero-badge {
-    display: inline-block;
-    background: var(--gold);
-    color: var(--navy);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 5px 14px;
-    border-radius: 100px;
-    margin-bottom: 14px;
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(28px, 7vw, 42px);
-    line-height: 1.15;
-    color: #fff;
-    margin-bottom: 8px;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 40px; }
+  .hero { background: var(--navy); color: #fff; padding: 32px 20px 28px; text-align: center; position: relative; overflow: hidden; }
+  .hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 24px; background: var(--bg); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+  .hero-badge { display: inline-block; background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 14px; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(28px,7vw,42px); line-height: 1.15; color: #fff; margin-bottom: 8px; }
   .hero h1 span { color: var(--gold); }
-  .hero p {
-    font-size: 15px;
-    color: rgba(255,255,255,0.75);
-    margin-bottom: 20px;
-    line-height: 1.6;
-  }
-  .hero-pills {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .pill {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.9);
-    font-size: 12px;
-    padding: 5px 12px;
-    border-radius: 100px;
-  }
+  .hero p { font-size: 15px; color: rgba(255,255,255,0.75); margin-bottom: 20px; line-height: 1.6; }
+  .hero-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 8px; }
+  .pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.9); font-size: 12px; padding: 5px 12px; border-radius: 100px; }
   .pill strong { color: var(--gold); }
-
-  .seats-bar {
-    background: var(--gold-light);
-    border-bottom: 1px solid var(--gold);
-    padding: 10px 20px;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--navy);
-    letter-spacing: 0.3px;
-  }
-  .seats-bar span { color: #c0392b; font-weight: 700; }
-
-  .form-wrap {
-    max-width: 480px;
-    margin: 28px auto 0;
-    padding: 0 16px;
-  }
-
-  .form-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 28px 24px 32px;
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 24px rgba(15,37,87,0.07);
-  }
-
-  .form-section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 18px;
-    margin-top: 24px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--gold-light);
-  }
+  .seats-bar { background: var(--gold-light); border-bottom: 1px solid var(--gold); padding: 14px 20px 12px; text-align: center; }
+  .seats-main { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 9px; }
+  .seats-count { font-size: 22px; font-weight: 700; color: #c0392b; }
+  .seats-main.urgent .seats-count { animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.55} }
+  .seats-track { height: 9px; background: rgba(15,37,87,0.13); border-radius: 100px; overflow: hidden; max-width: 360px; margin: 0 auto 7px; }
+  .seats-fill { height: 100%; border-radius: 100px; background: var(--gold); transition: width 1s ease, background 0.5s; }
+  .seats-fill.low { background: #e67e22; }
+  .seats-fill.critical { background: #c0392b; }
+  .seats-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.3px; }
+  .form-wrap { max-width: 480px; margin: 28px auto 0; padding: 0 16px; }
+  .form-card { background: var(--white); border-radius: var(--radius); padding: 28px 24px 32px; border: 1px solid var(--border); box-shadow: 0 4px 24px rgba(15,37,87,0.07); }
+  .form-section-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; margin-top: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--gold-light); }
   .form-section-label:first-child { margin-top: 0; }
-
   .field { margin-bottom: 18px; }
-
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  label .req { color: #c0392b; margin-left: 2px; }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="number"],
-  select {
-    width: 100%;
-    height: var(--input-h);
-    padding: 0 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    background: #fafaf8;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  input:focus, select:focus {
-    border-color: var(--navy);
-    box-shadow: 0 0 0 3px rgba(15,37,87,0.08);
-    background: #fff;
-  }
+  label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  label .req { color: var(--err); margin-left: 2px; }
+  input[type="text"], input[type="email"], input[type="tel"], select { width: 100%; height: var(--input-h); padding: 0 16px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: #fafaf8; border: 1.5px solid var(--border); border-radius: 8px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; appearance: none; }
+  input:focus, select:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(15,37,87,0.08); background: #fff; }
   input::placeholder { color: #b0afc0; }
-
+  input.is-invalid, select.is-invalid { border-color: var(--err) !important; background: #fff8f8; box-shadow: 0 0 0 3px rgba(192,57,43,0.08) !important; }
+  input.is-valid, select.is-valid { border-color: var(--ok) !important; }
+  .radio-group.is-invalid { outline: 2px solid var(--err); outline-offset: 4px; border-radius: 8px; }
+  .field-error { display: none; font-size: 12px; color: var(--err); margin-top: 5px; padding-left: 2px; }
+  .field-error.show { display: block; }
   .select-wrap { position: relative; }
-  .select-wrap::after {
-    content: '▾';
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    pointer-events: none;
-    font-size: 16px;
-  }
+  .select-wrap::after { content: 'v'; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: 16px; }
   select { padding-right: 40px; cursor: pointer; }
-
-  .row-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  /* Radio group */
-  .radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 4px;
-  }
-  .radio-group label {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--text);
-    cursor: pointer;
-    background: #fafaf8;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    transition: border-color 0.2s, background 0.2s;
-    margin: 0;
-  }
-  .radio-group input[type="radio"] {
-    width: 16px;
-    height: 16px;
-    min-width: 16px;
-    accent-color: var(--navy);
-    margin: 0;
-  }
-  .radio-group input[type="radio"]:checked + span {
-    color: var(--navy);
-    font-weight: 500;
-  }
-  .radio-group label:has(input:checked) {
-    border-color: var(--navy);
-    background: #f0f4ff;
-  }
-
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 24px 0 20px;
-  }
-
-  .consent {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    margin-bottom: 22px;
-  }
-  .consent input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    margin-top: 1px;
-    accent-color: var(--navy);
-    cursor: pointer;
-  }
-  .consent label {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin: 0;
-    font-weight: 400;
-  }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .radio-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; border-radius: 8px; }
+  .radio-group label { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 400; cursor: pointer; background: #fafaf8; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; transition: border-color 0.2s, background 0.2s; margin: 0; }
+  .radio-group input[type="radio"] { width: 16px; height: 16px; min-width: 16px; accent-color: var(--navy); margin: 0; }
+  .radio-group label:has(input:checked) { border-color: var(--navy); background: #f0f4ff; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0 20px; }
+  .consent { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 22px; }
+  .consent input[type="checkbox"] { width: 20px; height: 20px; min-width: 20px; margin-top: 1px; accent-color: var(--navy); cursor: pointer; }
+  .consent.is-invalid input[type="checkbox"] { outline: 2px solid var(--err); outline-offset: 2px; }
+  .consent label { font-size: 12px; color: var(--muted); line-height: 1.6; margin: 0; font-weight: 400; }
   .consent label a { color: var(--navy); }
-
-  .btn-submit {
-    width: 100%;
-    height: 54px;
-    background: var(--navy);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    position: relative;
-    overflow: hidden;
-  }
+  .btn-submit { width: 100%; height: 54px; background: var(--navy); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.5px; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.1s; position: relative; overflow: hidden; }
   .btn-submit:hover { background: #162f6e; }
   .btn-submit:active { transform: scale(0.98); }
   .btn-submit:disabled { background: #9a9aaa; cursor: not-allowed; }
   .btn-submit .btn-text { transition: opacity 0.2s; }
-  .btn-submit .btn-loading {
-    display: none;
-    position: absolute;
-    inset: 0;
-    align-items: center;
-    justify-content: center;
-  }
+  .btn-submit .btn-loading { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; }
   .btn-submit.loading .btn-text { opacity: 0; }
   .btn-submit.loading .btn-loading { display: flex; }
-
-  .spinner {
-    width: 22px; height: 22px;
-    border: 3px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
+  .spinner { width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .success-card {
-    display: none;
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 40px 24px;
-    text-align: center;
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 24px rgba(15,37,87,0.07);
-  }
+  .success-card { display: none; background: var(--white); border-radius: var(--radius); padding: 40px 24px; text-align: center; border: 1px solid var(--border); box-shadow: 0 4px 24px rgba(15,37,87,0.07); }
   .success-card.show { display: block; }
-  .success-icon {
-    width: 64px; height: 64px;
-    background: #e8f5ee;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 28px;
-  }
-  .success-card h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 24px;
-    color: var(--navy);
-    margin-bottom: 10px;
-  }
-  .success-card p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
+  .success-icon { width: 64px; height: 64px; background: #e8f5ee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; }
+  .success-card h2 { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--navy); margin-bottom: 10px; }
+  .success-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
   .success-card .student-name { color: var(--gold); font-weight: 600; }
-
-  .form-error {
-    display: none;
-    background: #fdf0ef;
-    border: 1px solid #f5c6c3;
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: #c0392b;
-    margin-bottom: 16px;
-    line-height: 1.5;
-  }
+  .form-error { display: none; background: var(--err-bg); border: 1px solid var(--err-border); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: var(--err); margin-bottom: 16px; line-height: 1.5; }
   .form-error.show { display: block; }
-
-  .footer-note {
-    text-align: center;
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 20px;
-    line-height: 1.6;
-    padding: 0 8px;
-  }
+  .footer-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 20px; line-height: 1.6; padding: 0 8px; }
   .footer-note a { color: var(--navy); text-decoration: none; }
-
-  @media (max-width: 360px) {
-    .row-2 { grid-template-columns: 1fr; }
-    .form-card { padding: 22px 16px 26px; }
-  }
+  .waitlist-banner { display: flex; gap: 14px; align-items: flex-start; background: #fff3cd; border: 1px solid #f5c842; border-radius: 10px; padding: 14px 16px; margin-bottom: 22px; }
+  .waitlist-icon { font-size: 26px; line-height: 1; }
+  .waitlist-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .waitlist-sub { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .btn-waitlist { background: #c9a84c !important; }
+  .btn-waitlist:hover { background: #a8872e !important; }
+  @media (max-width: 360px) { .row-2 { grid-template-columns: 1fr; } .form-card { padding: 22px 16px 26px; } }
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <div class="hero-badge">Summer 2026 · Now Enrolling</div>
+  <div class="hero-badge">Summer 2026 - Now Enrolling</div>
   <h1><span>Elite</span> SAT Prep</h1>
-  <p>A partnership with the City of White Plains Youth Bureau<br>& Bell Curves Educational Services</p>
+  <p>A partnership with the City of White Plains Youth Bureau<br>&amp; Bell Curves Educational Services</p>
   <div class="hero-pills">
-    <span class="pill">📍 College of Westchester</span>
-    <span class="pill">🗓 <strong>8 Weeks</strong> · Jul–Aug</span>
-    <span class="pill">✅ <strong>Fully Funded</strong></span>
-    <span class="pill">📚 Rising 11th &amp; 12th Graders</span>
+    <span class="pill">College of Westchester</span>
+    <span class="pill"><strong>8 Weeks</strong> Jul-Aug</span>
+    <span class="pill"><strong>Fully Funded</strong></span>
+    <span class="pill">Rising 11th &amp; 12th Graders</span>
   </div>
 </div>
 
 <div class="seats-bar">
-  ⚡ <span>Only 30 seats available</span> — selective enrollment, apply early
+  <div class="seats-main" id="seatsMain">
+    <span class="seats-count" id="seatsCount">30</span> seats remaining
+  </div>
+  <div class="seats-track"><div class="seats-fill" id="seatsFill" style="width:0%"></div></div>
+  <div class="seats-sub" id="seatsSub">Selective enrollment - apply early</div>
 </div>
 
 <div class="form-wrap">
-
   <div class="success-card" id="successCard">
-    <div class="success-icon">🎓</div>
+    <div class="success-icon">&#127891;</div>
     <h2>Application Received!</h2>
     <p>Thanks, <span class="student-name" id="successName">there</span>!<br>
     Your application for the <strong>Elite SAT Prep</strong> program has been submitted.<br><br>
-    Jason Roberts will be in touch at your email address. Remember — only 30 seats are available, so you're smart to apply early.</p>
+    Jason Roberts will be in touch at your email address. Seats are limited.</p>
+  </div>
+
+  <div class="success-card" id="waitlistSuccessCard">
+    <div class="success-icon">&#128203;</div>
+    <h2>You're on the Waitlist!</h2>
+    <p>Thanks, <span class="student-name" id="waitlistSuccessName">there</span>!<br>
+    You've been added to the waitlist for <strong>Elite SAT Prep Summer 2026</strong>.<br><br>
+    If a seat opens up, Jason Roberts will contact you right away.</p>
+  </div>
+
+  <div class="form-card" id="waitlistCard" style="display:none;">
+    <div class="waitlist-banner">
+      <span class="waitlist-icon">&#128203;</span>
+      <div>
+        <div class="waitlist-title">Program Full - Join the Waitlist</div>
+        <div class="waitlist-sub">All 30 seats have been claimed. Add your name below and we'll contact you if a spot opens up.</div>
+      </div>
+    </div>
+    <div class="form-error" id="waitlistError">Please fix the highlighted fields below.</div>
+    <form id="waitlistForm" action="https://formspree.io/f/maqaqppv" method="POST" novalidate>
+      <input type="hidden" name="_subject" value="WAITLIST - Elite SAT Prep Summer 2026"/>
+      <input type="hidden" name="Program" value="WAITLIST - Elite SAT Prep Summer 2026"/>
+      <input type="hidden" name="Status" value="WAITLIST"/>
+      <div class="form-section-label">Your Information</div>
+      <div class="field">
+        <label for="wlName">Full Name <span class="req">*</span></label>
+        <input type="text" id="wlName" name="Student Name" placeholder="First and last name" required/>
+        <div class="field-error" id="wlName-err">Please enter your full name.</div>
+      </div>
+      <div class="field">
+        <label for="wlEmail">Email Address <span class="req">*</span></label>
+        <input type="email" id="wlEmail" name="Email Address" placeholder="student@email.com" required/>
+        <div class="field-error" id="wlEmail-err">Please enter a valid email address.</div>
+      </div>
+      <div class="field">
+        <label for="wlPhone">Phone Number <span class="req">*</span></label>
+        <input type="tel" id="wlPhone" name="Phone Number" placeholder="(914) 555-0100" required/>
+        <div class="field-error" id="wlPhone-err">Please enter a phone number.</div>
+      </div>
+      <div class="field">
+        <label for="wlSchool">Current School <span class="req">*</span></label>
+        <input type="text" id="wlSchool" name="School" placeholder="e.g. White Plains High School" required/>
+        <div class="field-error" id="wlSchool-err">Please enter your school name.</div>
+      </div>
+      <hr class="divider"/>
+      <button type="submit" class="btn-submit btn-waitlist" id="waitlistBtn">
+        <span class="btn-text">Join the Waitlist</span>
+        <span class="btn-loading"><div class="spinner"></div></span>
+      </button>
+    </form>
   </div>
 
   <div class="form-card" id="formCard">
-
-    <div class="form-error" id="formError">
-      Something went wrong. Please try again or email <a href="mailto:jaroberts1216@yahoo.com">jaroberts1216@yahoo.com</a> directly.
-    </div>
-
-    <form id="signupForm"
-          action="https://formspree.io/f/maqaqppv"
-          method="POST"
-          novalidate>
-
-      <input type="hidden" name="_subject" value="New Elite SAT Prep Application – Summer 2026"/>
+    <div class="form-error" id="formError">Please fix the highlighted fields below before submitting.</div>
+    <form id="signupForm" action="https://formspree.io/f/maqaqppv" method="POST" novalidate>
+      <input type="hidden" name="_subject" value="New Elite SAT Prep Application - Summer 2026"/>
       <input type="hidden" name="Program" value="Elite SAT Prep Summer 2026"/>
 
-      <!-- ── SECTION 1: Student Information ── -->
       <div class="form-section-label">Student Information</div>
-
       <div class="field">
         <label for="studentName">Student Full Name <span class="req">*</span></label>
-        <input type="text" id="studentName" name="Student Name"
-               placeholder="First and last name" required autocomplete="name"/>
+        <input type="text" id="studentName" name="Student Name" placeholder="First and last name" required autocomplete="name"/>
+        <div class="field-error" id="studentName-err">Please enter the student's full name.</div>
       </div>
-
       <div class="row-2">
         <div class="field">
           <label for="grade">Current Grade <span class="req">*</span></label>
           <div class="select-wrap">
             <select id="grade" name="Current Grade" required>
-              <option value="" disabled selected>Select…</option>
-              <option value="10th (Rising 11th)">10th → Rising 11th</option>
-              <option value="11th (Rising 12th)">11th → Rising 12th</option>
+              <option value="" disabled selected>Select...</option>
+              <option value="10th (Rising 11th)">10th - Rising 11th</option>
+              <option value="11th (Rising 12th)">11th - Rising 12th</option>
             </select>
           </div>
+          <div class="field-error" id="grade-err">Please select a grade.</div>
         </div>
         <div class="field">
           <label for="gpa">Current GPA <span class="req">*</span></label>
-          <input type="text" id="gpa" name="Current GPA"
-                 placeholder="e.g. 3.5" required/>
+          <input type="text" id="gpa" name="Current GPA" placeholder="e.g. 3.5" required/>
+          <div class="field-error" id="gpa-err">Please enter a GPA (e.g. 3.5).</div>
         </div>
       </div>
-
       <div class="field">
         <label for="gender">Gender <span class="req">*</span></label>
         <div class="select-wrap">
           <select id="gender" name="Gender" required>
-            <option value="" disabled selected>Select…</option>
+            <option value="" disabled selected>Select...</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Non-binary">Non-binary</option>
@@ -432,179 +215,364 @@
             <option value="Self-describe">Prefer to self-describe</option>
           </select>
         </div>
+        <div class="field-error" id="gender-err">Please select a gender.</div>
       </div>
-
       <div class="field">
         <label for="language">Primary Language <span class="req">*</span></label>
-        <input type="text" id="language" name="Primary Language"
-               placeholder="e.g. English, Spanish" required/>
+        <input type="text" id="language" name="Primary Language" placeholder="e.g. English, Spanish" required/>
+        <div class="field-error" id="language-err">Please enter a primary language.</div>
       </div>
-
       <div class="field">
         <label>First Generation College Student? <span class="req">*</span></label>
-        <div class="radio-group">
-          <label><input type="radio" name="First Generation College Student" value="Yes" required/><span>Yes</span></label>
+        <div class="radio-group" id="firstgen-group">
+          <label><input type="radio" name="First Generation College Student" value="Yes"/><span>Yes</span></label>
           <label><input type="radio" name="First Generation College Student" value="No"/><span>No</span></label>
           <label><input type="radio" name="First Generation College Student" value="Not sure"/><span>Not sure</span></label>
         </div>
+        <div class="field-error" id="firstgen-err">Please select an option.</div>
       </div>
 
-      <!-- ── SECTION 2: Contact ── -->
       <div class="form-section-label">Contact Information</div>
-
       <div class="row-2">
         <div class="field">
           <label for="phone">Phone Number <span class="req">*</span></label>
-          <input type="tel" id="phone" name="Phone Number"
-                 placeholder="(914) 555-0100" required autocomplete="tel"/>
+          <input type="tel" id="phone" name="Phone Number" placeholder="(914) 555-0100" required autocomplete="tel"/>
+          <div class="field-error" id="phone-err">Please enter a phone number.</div>
         </div>
         <div class="field">
           <label for="email">Email Address <span class="req">*</span></label>
-          <input type="email" id="email" name="Email Address"
-                 placeholder="student@email.com" required autocomplete="email"/>
+          <input type="email" id="email" name="Email Address" placeholder="student@email.com" required autocomplete="email"/>
+          <div class="field-error" id="email-err">Please enter a valid email address.</div>
         </div>
       </div>
-
       <div class="field">
         <label for="address">Home Address <span class="req">*</span></label>
-        <input type="text" id="address" name="Home Address"
-               placeholder="Street, City, State, ZIP" required autocomplete="street-address"/>
+        <input type="text" id="address" name="Home Address" placeholder="Street, City, State, ZIP" required autocomplete="street-address"/>
+        <div class="field-error" id="address-err">Please enter a home address.</div>
       </div>
-
-      <div class="field">
-        <label for="emergency">Emergency Contact <span class="req">*</span></label>
-        <input type="text" id="emergency" name="Emergency Contact"
-               placeholder="Name and phone number" required/>
-      </div>
-
-      <!-- ── SECTION 3: School & SAT ── -->
-      <div class="form-section-label">School &amp; SAT Background</div>
-
-      <div class="field">
-        <label for="school">Current School <span class="req">*</span></label>
-        <input type="text" id="school" name="School"
-               placeholder="e.g. White Plains High School" required/>
-      </div>
-
-      <div class="field">
-        <label>Have you taken the SAT before? <span class="req">*</span></label>
-        <div class="radio-group">
-          <label><input type="radio" name="Taken SAT Before" value="Yes" required/><span>Yes</span></label>
-          <label><input type="radio" name="Taken SAT Before" value="No"/><span>No</span></label>
+      <div class="row-2">
+        <div class="field">
+          <label for="emergencyName">Emergency Contact Name <span class="req">*</span></label>
+          <input type="text" id="emergencyName" name="Emergency Contact Name" placeholder="Full name" required/>
+          <div class="field-error" id="emergencyName-err">Please enter an emergency contact name.</div>
+        </div>
+        <div class="field">
+          <label for="emergencyPhone">Emergency Contact Phone <span class="req">*</span></label>
+          <input type="tel" id="emergencyPhone" name="Emergency Contact Phone" placeholder="(914) 555-0100" required/>
+          <div class="field-error" id="emergencyPhone-err">Please enter an emergency contact phone.</div>
         </div>
       </div>
 
+      <div class="form-section-label">School and SAT Background</div>
+      <div class="field">
+        <label for="school">Current School <span class="req">*</span></label>
+        <input type="text" id="school" name="School" placeholder="e.g. White Plains High School" required/>
+        <div class="field-error" id="school-err">Please enter your school name.</div>
+      </div>
+      <div class="field">
+        <label>Have you taken the SAT before? <span class="req">*</span></label>
+        <div class="radio-group" id="sat-group">
+          <label><input type="radio" name="Taken SAT Before" value="Yes"/><span>Yes</span></label>
+          <label><input type="radio" name="Taken SAT Before" value="No"/><span>No</span></label>
+        </div>
+        <div class="field-error" id="sat-err">Please select Yes or No.</div>
+      </div>
       <div class="field">
         <label for="targetScore">Target SAT Score</label>
         <div class="select-wrap">
           <select id="targetScore" name="Target SAT Score">
-            <option value="" disabled selected>Select a range…</option>
-            <option value="1000–1100">1000–1100</option>
-            <option value="1100–1200">1100–1200</option>
-            <option value="1200–1300">1200–1300</option>
-            <option value="1300–1400">1300–1400</option>
-            <option value="1400–1500">1400–1500</option>
+            <option value="" disabled selected>Select a range...</option>
+            <option value="1000-1100">1000-1100</option>
+            <option value="1100-1200">1100-1200</option>
+            <option value="1200-1300">1200-1300</option>
+            <option value="1300-1400">1300-1400</option>
+            <option value="1400-1500">1400-1500</option>
             <option value="1500+">1500+</option>
           </select>
         </div>
       </div>
 
       <hr class="divider"/>
-
-      <div class="consent">
+      <div class="consent" id="consent-wrap">
         <input type="checkbox" id="consent" name="Consent" value="Yes" required/>
-        <label for="consent">
-          I confirm this student is a rising 11th or 12th grader and I agree to be contacted by Jason Roberts at WPYB regarding this program.
-        </label>
+        <label for="consent">I confirm this student is a rising 11th or 12th grader and I agree to be contacted by Jason Roberts at WPYB regarding this program.</label>
       </div>
+      <div class="field-error" id="consent-err" style="margin-top:-14px;margin-bottom:16px;">You must confirm this before submitting.</div>
 
       <button type="submit" class="btn-submit" id="submitBtn">
-        <span class="btn-text">Submit Application →</span>
+        <span class="btn-text">Submit Application</span>
         <span class="btn-loading"><div class="spinner"></div></span>
       </button>
-
     </form>
   </div>
 
   <div class="footer-note">
     Questions? Contact <a href="mailto:jaroberts1216@yahoo.com">Jason Roberts</a><br>
-    jaroberts1216@yahoo.com · White Plains Youth Bureau
+    jaroberts1216@yahoo.com - White Plains Youth Bureau
   </div>
-
 </div>
 
 <script>
-  const form = document.getElementById('signupForm');
-  const btn = document.getElementById('submitBtn');
-  const formCard = document.getElementById('formCard');
-  const successCard = document.getElementById('successCard');
-  const formError = document.getElementById('formError');
-  const successName = document.getElementById('successName');
+  var TOTAL_SEATS  = 30;
+  var TAKEN_SO_FAR = 2;
+  var STORAGE_KEY  = 'wpyb_sat_2026_taken';
 
-  function validate() {
-    const fields = form.querySelectorAll('[required]');
-    for (let f of fields) {
-      if (f.type === 'checkbox' && !f.checked) { f.focus(); return false; }
-      if (f.type === 'radio') continue;
-      if (f.value.trim() === '') { f.focus(); return false; }
-      if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value)) { f.focus(); return false; }
-    }
-    // Check radio groups
-    const radioGroups = ['First Generation College Student', 'Taken SAT Before'];
-    for (let name of radioGroups) {
-      const checked = form.querySelector(`input[name="${name}"]:checked`);
-      if (!checked) {
-        form.querySelector(`input[name="${name}"]`).focus();
-        return false;
-      }
-    }
-    return true;
+  function getTaken() {
+    var s = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+    return Math.max(TAKEN_SO_FAR, isNaN(s) ? 0 : s);
   }
+  function saveTaken(n) { localStorage.setItem(STORAGE_KEY, String(n)); }
+
+  function renderCounter() {
+    var taken = getTaken();
+    var rem   = Math.max(0, TOTAL_SEATS - taken);
+    var pct   = Math.min(100, (taken / TOTAL_SEATS) * 100);
+    document.getElementById('seatsCount').textContent = rem;
+    var fill = document.getElementById('seatsFill');
+    fill.style.width = pct + '%';
+    fill.classList.remove('low','critical');
+    var main = document.getElementById('seatsMain');
+    main.classList.remove('urgent');
+    var sub = document.getElementById('seatsSub');
+    if (rem === 0) {
+      fill.classList.add('critical'); main.classList.add('urgent');
+      sub.textContent = 'Program full - join the waitlist below';
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('waitlistCard').style.display = 'block';
+    } else if (rem <= 5) {
+      fill.classList.add('critical'); main.classList.add('urgent');
+      sub.textContent = 'Almost full - apply immediately!';
+    } else if (rem <= 10) {
+      fill.classList.add('low');
+      sub.textContent = 'Running low - apply soon!';
+    } else {
+      sub.textContent = 'Selective enrollment - apply early';
+    }
+  }
+  renderCounter();
+
+  function setErr(id, eid) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.add('is-invalid'); el.classList.remove('is-valid'); }
+    var e = document.getElementById(eid); if (e) e.classList.add('show');
+  }
+  function clrErr(id, eid) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.remove('is-invalid'); el.classList.add('is-valid'); }
+    var e = document.getElementById(eid); if (e) e.classList.remove('show');
+  }
+  function setGrpErr(gid, eid) { document.getElementById(gid).classList.add('is-invalid'); document.getElementById(eid).classList.add('show'); }
+  function clrGrpErr(gid, eid) { document.getElementById(gid).classList.remove('is-invalid'); document.getElementById(eid).classList.remove('show'); }
+
+  var notEmpty   = function(el) { return el.value.trim() !== ''; };
+  var validEmail = function(el) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()); };
+
+  function liveVal(id, eid, fn) {
+    var el = document.getElementById(id); if (!el) return;
+    ['input','change'].forEach(function(ev) {
+      el.addEventListener(ev, function() { fn(el) ? clrErr(id,eid) : setErr(id,eid); });
+    });
+  }
+
+  liveVal('studentName','studentName-err',notEmpty);
+  liveVal('grade','grade-err',notEmpty);
+  liveVal('gpa','gpa-err',notEmpty);
+  liveVal('gender','gender-err',notEmpty);
+  liveVal('language','language-err',notEmpty);
+  liveVal('phone','phone-err',notEmpty);
+  liveVal('email','email-err',validEmail);
+  liveVal('address','address-err',notEmpty);
+  liveVal('emergencyName','emergencyName-err',notEmpty);
+  liveVal('emergencyPhone','emergencyPhone-err',notEmpty);
+  liveVal('school','school-err',notEmpty);
+  liveVal('wlName','wlName-err',notEmpty);
+  liveVal('wlEmail','wlEmail-err',validEmail);
+  liveVal('wlPhone','wlPhone-err',notEmpty);
+  liveVal('wlSchool','wlSchool-err',notEmpty);
+
+  document.querySelectorAll('input[name="First Generation College Student"]').forEach(function(r) {
+    r.addEventListener('change', function() { clrGrpErr('firstgen-group','firstgen-err'); });
+  });
+  document.querySelectorAll('input[name="Taken SAT Before"]').forEach(function(r) {
+    r.addEventListener('change', function() { clrGrpErr('sat-group','sat-err'); });
+  });
+  document.getElementById('consent').addEventListener('change', function() {
+    if (this.checked) { document.getElementById('consent-wrap').classList.remove('is-invalid'); document.getElementById('consent-err').classList.remove('show'); }
+  });
+
+  function validateMain() {
+    var ok = true;
+    function chk(id, eid, fn) { var el = document.getElementById(id); if (fn(el)) clrErr(id,eid); else { setErr(id,eid); ok=false; } }
+    chk('studentName','studentName-err',notEmpty);
+    chk('grade','grade-err',notEmpty);
+    chk('gpa','gpa-err',notEmpty);
+    chk('gender','gender-err',notEmpty);
+    chk('language','language-err',notEmpty);
+    chk('phone','phone-err',notEmpty);
+    chk('email','email-err',validEmail);
+    chk('address','address-err',notEmpty);
+    chk('emergencyName','emergencyName-err',notEmpty);
+    chk('emergencyPhone','emergencyPhone-err',notEmpty);
+    chk('school','school-err',notEmpty);
+    if (!document.querySelector('input[name="First Generation College Student"]:checked')) { setGrpErr('firstgen-group','firstgen-err'); ok=false; } else { clrGrpErr('firstgen-group','firstgen-err'); }
+    if (!document.querySelector('input[name="Taken SAT Before"]:checked')) { setGrpErr('sat-group','sat-err'); ok=false; } else { clrGrpErr('sat-group','sat-err'); }
+    var cb = document.getElementById('consent');
+    if (!cb.checked) { document.getElementById('consent-wrap').classList.add('is-invalid'); document.getElementById('consent-err').classList.add('show'); ok=false; }
+    else { document.getElementById('consent-wrap').classList.remove('is-invalid'); document.getElementById('consent-err').classList.remove('show'); }
+    return ok;
+  }
+
+  var form = document.getElementById('signupForm');
+  var btn  = document.getElementById('submitBtn');
+  var formCard = document.getElementById('formCard');
+  var successCard = document.getElementById('successCard');
+  var formError = document.getElementById('formError');
 
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
     formError.classList.remove('show');
-
-    if (!validate()) {
-      formError.textContent = 'Please fill in all required fields before submitting.';
+    if (!validateMain()) {
       formError.classList.add('show');
+      var bad = form.querySelector('.is-invalid');
+      if (bad) bad.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-
-    btn.classList.add('loading');
-    btn.disabled = true;
-
-    const name = document.getElementById('studentName').value.trim();
-
+    btn.classList.add('loading'); btn.disabled = true;
+    var name = document.getElementById('studentName').value.trim();
     try {
-      const data = new FormData(form);
-      const res = await fetch(form.getAttribute('action'), {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
+      sanitizeForm(form);
+      var res = await fetch(form.getAttribute('action'), { method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} });
       if (res.ok) {
-        showSuccess(name);
-      } else {
-        const json = await res.json();
-        const msg = (json.errors || []).map(e => e.message).join(', ') || 'Server error';
-        throw new Error(msg);
-      }
-    } catch(err) {
-      btn.classList.remove('loading');
-      btn.disabled = false;
-      formError.textContent = 'Something went wrong. Please try again or email jaroberts1216@yahoo.com directly.';
-      formError.classList.add('show');
-    }
+        saveTaken(getTaken()+1); renderCounter();
+        document.getElementById('successName').textContent = name || 'there';
+        formCard.style.display = 'none'; successCard.classList.add('show');
+        window.scrollTo({top:0,behavior:'smooth'});
+      } else { var j=await res.json(); throw new Error((j.errors||[]).map(function(e){return e.message;}).join(', ')||'Server error'); }
+    } catch(err) { btn.classList.remove('loading'); btn.disabled=false; formError.textContent='Something went wrong. Please try again or email jaroberts1216@yahoo.com directly.'; formError.classList.add('show'); }
   });
 
-  function showSuccess(name) {
-    successName.textContent = name || 'there';
-    formCard.style.display = 'none';
-    successCard.classList.add('show');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  function validateWL() {
+    var ok = true;
+    function chk(id,eid,fn) { var el=document.getElementById(id); if(fn(el)) clrErr(id,eid); else { setErr(id,eid); ok=false; } }
+    chk('wlName','wlName-err',notEmpty);
+    chk('wlEmail','wlEmail-err',validEmail);
+    chk('wlPhone','wlPhone-err',notEmpty);
+    chk('wlSchool','wlSchool-err',notEmpty);
+    return ok;
   }
-</script>
 
+  var wlForm = document.getElementById('waitlistForm');
+  var wlBtn  = document.getElementById('waitlistBtn');
+  var wlErr  = document.getElementById('waitlistError');
+  var wlCard = document.getElementById('waitlistCard');
+  var wlSucc = document.getElementById('waitlistSuccessCard');
+
+  wlForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    wlErr.classList.remove('show');
+    if (!validateWL()) { wlErr.textContent='Please fill in all required fields.'; wlErr.classList.add('show'); return; }
+    wlBtn.classList.add('loading'); wlBtn.disabled=true;
+    var name = document.getElementById('wlName').value.trim();
+    try {
+      sanitizeForm(wlForm);
+      var res = await fetch(wlForm.getAttribute('action'), { method:'POST', body:new FormData(wlForm), headers:{'Accept':'application/json'} });
+      if (res.ok) {
+        document.getElementById('waitlistSuccessName').textContent = name || 'there';
+        wlCard.style.display='none'; wlSucc.classList.add('show');
+        window.scrollTo({top:0,behavior:'smooth'});
+      } else { var j=await res.json(); throw new Error((j.errors||[]).map(function(e){return e.message;}).join(', ')||'Server error'); }
+    } catch(err) { wlBtn.classList.remove('loading'); wlBtn.disabled=false; wlErr.textContent='Something went wrong. Please try again or email jaroberts1216@yahoo.com directly.'; wlErr.classList.add('show'); }
+  });
+
+  /* ── INPUT MASKS ── */
+
+  // Phone formatter: forces (XXX) XXX-XXXX
+  function maskPhone(el) {
+    el.addEventListener('input', function() {
+      var digits = el.value.replace(/\D/g,'').slice(0,10);
+      var out = '';
+      if (digits.length === 0) { el.value = ''; return; }
+      if (digits.length <= 3) { out = '(' + digits; }
+      else if (digits.length <= 6) { out = '(' + digits.slice(0,3) + ') ' + digits.slice(3); }
+      else { out = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6); }
+      el.value = out;
+    });
+    el.addEventListener('keydown', function(e) {
+      // Allow backspace to work naturally
+      if (e.key === 'Backspace' && el.value.length > 0) {
+        var v = el.value;
+        // Strip trailing non-digit before backspace
+        if (!/\d$/.test(v)) { el.value = v.slice(0,-1); e.preventDefault(); }
+      }
+    });
+  }
+
+  // Name fields: letters, spaces, hyphens, apostrophes only
+  function maskName(el) {
+    el.addEventListener('input', function() {
+      el.value = el.value.replace(/[^a-zA-Z\s\-''.]/g,'');
+    });
+  }
+
+  // Text fields: letters, numbers, spaces, basic punctuation — no < > & " ' ; ( )
+  function maskText(el) {
+    el.addEventListener('input', function() {
+      el.value = el.value.replace(/[<>&;"()]/g,'');
+    });
+  }
+
+  // GPA: numbers 0.0–4.0, one decimal place max
+  function maskGPA(el) {
+    el.addEventListener('input', function() {
+      // Strip anything that isn't a digit or dot
+      var v = el.value.replace(/[^0-9.]/g,'');
+      // Only one decimal point
+      var parts = v.split('.');
+      if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
+      // Max one decimal place
+      if (parts[1] && parts[1].length > 1) v = parts[0] + '.' + parts[1].slice(0,1);
+      // Cap at 4.0
+      if (parseFloat(v) > 4.0) v = '4.0';
+      el.value = v;
+    });
+    el.addEventListener('blur', function() {
+      var v = parseFloat(el.value);
+      if (!isNaN(v)) {
+        if (v < 0) el.value = '0.0';
+        if (v > 4) el.value = '4.0';
+      }
+    });
+  }
+
+  // Language: letters and spaces only
+  function maskLettersOnly(el) {
+    el.addEventListener('input', function() {
+      el.value = el.value.replace(/[^a-zA-Z\s\-]/g,'');
+    });
+  }
+
+  // Apply masks
+  maskPhone(document.getElementById('phone'));
+  maskPhone(document.getElementById('emergencyPhone'));
+  maskPhone(document.getElementById('wlPhone'));
+  maskName(document.getElementById('studentName'));
+  maskName(document.getElementById('emergencyName'));
+  maskName(document.getElementById('wlName'));
+  maskGPA(document.getElementById('gpa'));
+  maskText(document.getElementById('address'));
+  maskText(document.getElementById('school'));
+  maskText(document.getElementById('wlSchool'));
+  maskLettersOnly(document.getElementById('language'));
+
+  /* ── SANITIZE ON SUBMIT: strip any HTML tags from all text inputs ── */
+  function stripTags(str) {
+    return str.replace(/<[^>]*>/g,'').trim();
+  }
+  function sanitizeForm(f) {
+    var inputs = f.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+    inputs.forEach(function(el) { el.value = stripTags(el.value); });
+  }
+
+</script>
 </body>
 </html>
