@@ -89,6 +89,7 @@
   .waitlist-sub { font-size: 12px; color: var(--muted); line-height: 1.6; }
   .btn-waitlist { background: #c9a84c !important; }
   .btn-waitlist:hover { background: #a8872e !important; }
+  .form-closing { font-size: 11px; color: var(--muted); line-height: 1.6; text-align: center; padding: 12px 8px 16px; font-style: italic; }
   @media (max-width: 360px) { .row-2 { grid-template-columns: 1fr; } .form-card { padding: 22px 16px 26px; } }
 </style>
 </head>
@@ -232,16 +233,16 @@
         <div class="field-error" id="firstgen-err">Please select an option.</div>
       </div>
 
-      <div class="form-section-label">Contact Information</div>
+      <div class="form-section-label">Student Contact</div>
       <div class="row-2">
         <div class="field">
-          <label for="phone">Phone Number <span class="req">*</span></label>
-          <input type="tel" id="phone" name="Phone Number" placeholder="(914) 555-0100" required autocomplete="tel"/>
+          <label for="phone">Student Phone <span class="req">*</span></label>
+          <input type="tel" id="phone" name="Student Phone" placeholder="(914) 555-0100" required autocomplete="tel"/>
           <div class="field-error" id="phone-err">Please enter a phone number.</div>
         </div>
         <div class="field">
-          <label for="email">Email Address <span class="req">*</span></label>
-          <input type="email" id="email" name="Email Address" placeholder="student@email.com" required autocomplete="email"/>
+          <label for="email">Student Email <span class="req">*</span></label>
+          <input type="email" id="email" name="Student Email" placeholder="student@email.com" required autocomplete="email"/>
           <div class="field-error" id="email-err">Please enter a valid email address.</div>
         </div>
       </div>
@@ -250,16 +251,23 @@
         <input type="text" id="address" name="Home Address" placeholder="Street, City, State, ZIP" required autocomplete="street-address"/>
         <div class="field-error" id="address-err">Please enter a home address.</div>
       </div>
+
+      <div class="form-section-label">Parent / Guardian Contact</div>
+      <div class="field">
+        <label for="parentName">Parent / Guardian Name <span class="req">*</span></label>
+        <input type="text" id="parentName" name="Parent Name" placeholder="Full name" required/>
+        <div class="field-error" id="parentName-err">Please enter a parent or guardian name.</div>
+      </div>
       <div class="row-2">
         <div class="field">
-          <label for="emergencyName">Emergency Contact Name <span class="req">*</span></label>
-          <input type="text" id="emergencyName" name="Emergency Contact Name" placeholder="Full name" required/>
-          <div class="field-error" id="emergencyName-err">Please enter an emergency contact name.</div>
+          <label for="parentPhone">Parent Phone <span class="req">*</span></label>
+          <input type="tel" id="parentPhone" name="Parent Phone" placeholder="(914) 555-0100" required/>
+          <div class="field-error" id="parentPhone-err">Please enter a parent phone number.</div>
         </div>
         <div class="field">
-          <label for="emergencyPhone">Emergency Contact Phone <span class="req">*</span></label>
-          <input type="tel" id="emergencyPhone" name="Emergency Contact Phone" placeholder="(914) 555-0100" required/>
-          <div class="field-error" id="emergencyPhone-err">Please enter an emergency contact phone.</div>
+          <label for="parentEmail">Parent Email <span class="req">*</span></label>
+          <input type="email" id="parentEmail" name="Parent Email" placeholder="parent@email.com" required/>
+          <div class="field-error" id="parentEmail-err">Please enter a valid parent email.</div>
         </div>
       </div>
 
@@ -293,11 +301,21 @@
       </div>
 
       <hr class="divider"/>
-      <div class="consent" id="consent-wrap">
+
+      <div class="consent" id="photo-wrap">
+        <input type="checkbox" id="photoRelease" name="Photo Release" value="Yes"/>
+        <label for="photoRelease">
+          <strong>Photo &amp; Media Release (optional)</strong> — I authorize the White Plains Youth Bureau and Bell Curves Educational Services to photograph or record the student during program activities. Images may be used on the program website or in program communications.
+        </label>
+      </div>
+
+      <div class="consent" id="consent-wrap" style="margin-top:12px;">
         <input type="checkbox" id="consent" name="Consent" value="Yes" required/>
         <label for="consent">I confirm this student is a rising 11th or 12th grader and I agree to be contacted by Jason Roberts at WPYB regarding this program.</label>
       </div>
       <div class="field-error" id="consent-err" style="margin-top:-14px;margin-bottom:16px;">You must confirm this before submitting.</div>
+
+      <p class="form-closing">Applications are reviewed on a rolling, selective basis. Submission does not guarantee enrollment. Families will be notified by email.</p>
 
       <button type="submit" class="btn-submit" id="submitBtn">
         <span class="btn-text">Submit Application</span>
@@ -382,8 +400,9 @@
   liveVal('phone','phone-err',notEmpty);
   liveVal('email','email-err',validEmail);
   liveVal('address','address-err',notEmpty);
-  liveVal('emergencyName','emergencyName-err',notEmpty);
-  liveVal('emergencyPhone','emergencyPhone-err',notEmpty);
+  liveVal('parentName','parentName-err',notEmpty);
+  liveVal('parentPhone','parentPhone-err',notEmpty);
+  liveVal('parentEmail','parentEmail-err',validEmail);
   liveVal('school','school-err',notEmpty);
   liveVal('wlName','wlName-err',notEmpty);
   liveVal('wlEmail','wlEmail-err',validEmail);
@@ -411,8 +430,9 @@
     chk('phone','phone-err',notEmpty);
     chk('email','email-err',validEmail);
     chk('address','address-err',notEmpty);
-    chk('emergencyName','emergencyName-err',notEmpty);
-    chk('emergencyPhone','emergencyPhone-err',notEmpty);
+    chk('parentName','parentName-err',notEmpty);
+    chk('parentPhone','parentPhone-err',notEmpty);
+    chk('parentEmail','parentEmail-err',validEmail);
     chk('school','school-err',notEmpty);
     if (!document.querySelector('input[name="First Generation College Student"]:checked')) { setGrpErr('firstgen-group','firstgen-err'); ok=false; } else { clrGrpErr('firstgen-group','firstgen-err'); }
     if (!document.querySelector('input[name="Taken SAT Before"]:checked')) { setGrpErr('sat-group','sat-err'); ok=false; } else { clrGrpErr('sat-group','sat-err'); }
@@ -553,10 +573,8 @@
 
   // Apply masks
   maskPhone(document.getElementById('phone'));
-  maskPhone(document.getElementById('emergencyPhone'));
   maskPhone(document.getElementById('wlPhone'));
   maskName(document.getElementById('studentName'));
-  maskName(document.getElementById('emergencyName'));
   maskName(document.getElementById('wlName'));
   maskGPA(document.getElementById('gpa'));
   maskText(document.getElementById('address'));
